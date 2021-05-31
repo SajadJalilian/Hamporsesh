@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Hamporsesh.Application.Core.ViewModels.Users;
 
 namespace Hamporsesh.Application.Users
@@ -34,5 +35,12 @@ namespace Hamporsesh.Application.Users
         /// 
         /// </summary>
         void Delete(long id);
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        UserOutputViewModel GetByUserName(string currentUserName);
     }
 }

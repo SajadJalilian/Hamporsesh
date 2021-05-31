@@ -1,6 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using Hamporsesh.Application.Answers;
+using Hamporsesh.Application.Choices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Hamporsesh.Application.Core.ViewModels.Dashboard;
+using Hamporsesh.Application.Polls;
+using Hamporsesh.Application.Questions;
+using Hamporsesh.Application.Users;
+using Hamporsesh.Application.Visitors;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -8,19 +15,26 @@ namespace Web.Areas.Admin.Controllers
     [Authorize]
     public class DashboardController : BaseController
     {
-        private readonly PollService _pollService;
-        private readonly ChoiceService _choiceService;
-        private readonly UserService _userService;
-        private readonly QuestionService _questionService;
-        private readonly AnswerService _answerService;
+        private readonly IPollService _pollService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
+        private readonly IUserService _userService;
+        private readonly IChoiceService _choiceService;
 
-        public DashboardController()
+
+        public DashboardController(
+            IPollService pollService,
+            IQuestionService questionService,
+            IAnswerService answerService,
+            IUserService userService,
+            IChoiceService choiceService
+        )
         {
-            _pollService = new PollService();
-            _choiceService = new ChoiceService();
-            _userService = new UserService();
-            _questionService = new QuestionService();
-            _answerService = new AnswerService();
+            _pollService = pollService;
+            _questionService = questionService;
+            _answerService = answerService;
+            _userService = userService;
+            _choiceService = choiceService;
         }
 
 

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Hamporsesh.Application.Choices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Hamporsesh.Application.Core.ViewModels.Users;
+using Hamporsesh.Application.Polls;
+using Hamporsesh.Application.Users;
 using Web.Extensions;
 
 namespace Web.Areas.Admin.Controllers
@@ -8,15 +11,19 @@ namespace Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class UsersController : Controller
     {
-        private readonly UserService _userService;
-        private readonly PollService _pollService;
-        private readonly ChoiceService _choiceService;
+        private readonly IUserService _userService;
+        private readonly IPollService _pollService;
+        private readonly IChoiceService _choiceService;
 
-        public UsersController()
+        public UsersController(
+                IUserService userService,
+                IPollService pollService,
+                IChoiceService choiceService
+            )
         {
-            _userService = new UserService();
-            _pollService = new PollService();
-            _choiceService = new ChoiceService();
+            _userService = userService;
+            _pollService = pollService;
+            _choiceService = choiceService;
         }
 
 

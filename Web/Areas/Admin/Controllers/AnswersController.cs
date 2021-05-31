@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Hamporsesh.Application.Answers;
+using Hamporsesh.Application.Choices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Hamporsesh.Application.Core.ViewModels.Answers;
+using Hamporsesh.Application.Polls;
+using Hamporsesh.Application.Questions;
+using Hamporsesh.Application.Users;
+using Hamporsesh.Application.Visitors;
 using Web.Extensions;
 
 namespace Web.Areas.Admin.Controllers
@@ -9,15 +15,25 @@ namespace Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class AnswersController : Controller
     {
-        private readonly AnswerService _answerService;
-        private readonly UserService _userService;
-        private readonly QuestionService _questionService;
+        private readonly IPollService _pollService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
+        private readonly IUserService _userService;
 
-        public AnswersController()
+
+        public AnswersController(
+            IPollService pollService,
+            IQuestionService questionService,
+            IAnswerService answerService,
+            IUserService userService,
+            IChoiceService choiceService,
+            IVisitorService visitorService
+        )
         {
-            _answerService = new AnswerService();
-            _userService = new UserService();
-            _questionService = new QuestionService();
+            _pollService = pollService;
+            _questionService = questionService;
+            _answerService = answerService;
+            _userService = userService;
         }
 
 
@@ -72,7 +88,7 @@ namespace Web.Areas.Admin.Controllers
 
             _answerService.Create(input);
 
-            return RedirectToAction("Details","Questions", new {id = input.QuestionId});
+            return RedirectToAction("Details", "Questions", new {id = input.QuestionId});
         }
 
 
@@ -134,7 +150,7 @@ namespace Web.Areas.Admin.Controllers
 
             _answerService.Update(input);
 
-            return RedirectToAction("Details", "Questions", new {id = question.Id });
+            return RedirectToAction("Details", "Questions", new {id = question.Id});
         }
 
 
@@ -156,8 +172,7 @@ namespace Web.Areas.Admin.Controllers
             var question = _questionService.GetbyId(ans.QuestionId);
 
             _answerService.Delete(id);
-            return RedirectToAction("Details", "Questions", new {id = question.Id });
-
+            return RedirectToAction("Details", "Questions", new {id = question.Id});
         }
     }
 }

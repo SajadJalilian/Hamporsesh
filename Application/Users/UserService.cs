@@ -89,6 +89,25 @@ namespace Hamporsesh.Application.Users
 
         }
 
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public UserOutputViewModel GetByUserName(string currentUserName)
+        {
+            var user = _users.FirstOrDefault(u => u.UserName == currentUserName);
+            return new UserOutputViewModel
+            {
+                Id = user.Id,
+                DisplayName = user.DisplayName,
+            };
+        }
+
+
+
+
         /// <summary>
         /// 
         /// </summary>

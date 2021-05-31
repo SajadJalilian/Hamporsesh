@@ -48,18 +48,8 @@ namespace Hamporsesh.Infrastructure.Data.Context
             var databaseType = _configuration["UnitTestDatabaseType"] ?? "SqlServer";
             var databaseName = _configuration["UnitTestDatabaseName"];
 
-            if (databaseType.Equals("InMemoryDatabase"))
-            {
-                optionsBuilder.UseInMemoryDatabase(databaseName: databaseName);
-            }
-            else if (databaseType.Equals("Sqlite"))
-            {
-                optionsBuilder.UseSqlite(@"Data Source=C:\Sqlite-UnitTest\" + databaseName + ".db");
-            }
-            else
-            {
+          
                 optionsBuilder.UseSqlServer(_configuration["ConnectionStrings:MainConnection"]);
-            }
         }
 
 
@@ -120,23 +110,6 @@ namespace Hamporsesh.Infrastructure.Data.Context
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void ExecuteSqlCommand(string query)
-        {
-            base.Database.ExecuteSqlCommand(query);
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void ExecuteSqlCommand(string query, params object[] parameters)
-        {
-            base.Database.ExecuteSqlCommand(query, parameters);
-        }
-
 
         /// <summary>
         /// 
@@ -155,18 +128,6 @@ namespace Hamporsesh.Infrastructure.Data.Context
             return base.SaveChangesAsync();
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void SetGeographyField<TEntity>(TEntity entity, string latitude, string longitude,
-            string entityName = null, string columnName = "Location") where TEntity : BaseEntity
-        {
-            entityName = entityName ?? entity.GetType().Name + "s";
-            var query = FormattableString.Invariant(
-                $"update [{entityName}] set {columnName} = geography::Point({latitude}, {longitude}, 4326) WHERE Id = '{entity.Id}';");
-            ExecuteSqlCommand(query);
-        }
 
 
         /// <summary>

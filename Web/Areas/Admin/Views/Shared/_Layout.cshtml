@@ -1,10 +1,8 @@
 ﻿@using System.Security.Claims
-@using Hamporsesh.Web.Services.Users
+@using Web.Areas.Admin.Components
 
 @{
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    var userService = new UserService();
-    var user = userService.GetById(long.Parse(userId));
+
 }
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
@@ -71,10 +69,7 @@
                 <ul>
                     <div class="logo">
                         <a href="@Url.Action(action: "Index", controller: "home", values: new {area = ""})">
-                            <!-- <img src="/admin/images/logo.png" alt="" /> -->
-                            <span>
-                                Welcome @user.DisplayName
-                            </span>
+                            @await Component.InvokeAsync(nameof(UserMenu))
                         </a>
                     </div>
                     <li>

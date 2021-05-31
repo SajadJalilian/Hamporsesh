@@ -1,16 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Hamporsesh.Application.Polls;
+using Hamporsesh.Application.Questions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly PollService _pollService;
-        private readonly QuestionService _questionService;
+        private readonly IPollService _pollService;
+        private readonly IQuestionService _questionService;
 
-        public HomeController()
+        public HomeController(
+            IPollService pollService,
+            IQuestionService questionService
+            )
         {
-            _pollService = new PollService();
-            _questionService = new QuestionService();
+            _pollService = pollService;
+            _questionService = questionService;
         }
 
 

@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
+using Hamporsesh.Application.Answers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Hamporsesh.Application.Core.ViewModels.Questions;
+using Hamporsesh.Application.Polls;
+using Hamporsesh.Application.Questions;
+using Hamporsesh.Application.Users;
 using Web.Extensions;
 
 namespace Web.Areas.Admin.Controllers
@@ -10,17 +14,24 @@ namespace Web.Areas.Admin.Controllers
     [Authorize]
     public class QuestionsController : BaseController
     {
-        private readonly UserService _userService;
-        private readonly PollService _pollService;
-        private readonly QuestionService _questionService;
-        private readonly AnswerService _answerService;
 
-        public QuestionsController(AnswerService answerService = null)
+        private readonly IPollService _pollService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
+        private readonly IUserService _userService;
+
+
+        public QuestionsController(
+            IPollService pollService,
+            IQuestionService questionService,
+            IAnswerService answerService,
+            IUserService userService
+        )
         {
-            _userService = new UserService();
-            _pollService = new PollService();
-            _questionService = new QuestionService();
-            _answerService = new AnswerService();
+            _pollService = pollService;
+            _questionService = questionService;
+            _answerService = answerService;
+            _userService = userService;
         }
 
 

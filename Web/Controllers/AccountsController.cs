@@ -1,4 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Hamporsesh.Application.Core.ViewModels.Account;
+using Hamporsesh.Application.Users;
+using Hamporsesh.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,14 +14,13 @@ namespace Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _userService = new UserService();
-
+            _userService = userService;
         }
 
 
