@@ -1,4 +1,5 @@
 ﻿using System;
+using Hamporsesh.Domain.Core.Enums;
 
 namespace Hamporsesh.Application.Core.ViewModels.Questions
 {

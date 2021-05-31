@@ -1,4 +1,6 @@
-﻿namespace Hamporsesh.Application.Core.ViewModels.Polls
+﻿using Hamporsesh.Domain.Core.Enums;
+
+namespace Hamporsesh.Application.Core.ViewModels.Polls
 {
     public class PollOutputViewModelAdmin
     {

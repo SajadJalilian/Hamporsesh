@@ -1,20 +1,31 @@
 ﻿using System.Collections.Generic;
+using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Users;
+using Hamporsesh.Domain.Entities;
+using Hamporsesh.Infrastructure.Data.Context;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hamporsesh.Application.Questions
 {
     public class QuestionService : IQuestionService
     {
-        private readonly UserService _userService;
-        private readonly MainContext _mainContext;
-        private readonly PollService _pollService;
+        private readonly IUserService _userService;
+        private readonly IUnitOfWork _uow;
+        private readonly IPollService _pollService;
+        private readonly DbSet<Question> _questions;
 
-        public QuestionService()
+        public QuestionService(
+            IUserService userService,
+            IUnitOfWork uow,
+            IPollService pollService
+            )
         {
-            _mainContext = new MainContext();
-            _userService = new UserService();
-            _pollService = new PollService();
+            _userService = userService;
+            _uow = uow;
+            _pollService = pollService;
+            _questions = uow.Set<Question>();
         }
 
 
@@ -23,7 +34,7 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public void Create(QuestionInputViewModel input)
         {
-            var questions = _mainContext.Set<Question>();
+            var questions = _uow.Set<Question>();
             var question = new Question
             {
                 Title = input.Title,
@@ -32,7 +43,7 @@ namespace Hamporsesh.Application.Questions
             };
 
             questions.Add(question);
-            _mainContext.SaveChanges();
+            _uow.SaveChanges();
         }
 
 
@@ -41,7 +52,7 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public void Update(QuestionInputViewModel input)
         {
-            var questions = _mainContext.Set<Question>();
+            var questions = _uow.Set<Question>();
 
             var question = questions.FirstOrDefault(u => u.Id == input.Id);
 
@@ -49,7 +60,7 @@ namespace Hamporsesh.Application.Questions
             question.Type = input.Type;
 
             questions.Update(question);
-            _mainContext.SaveChanges();
+            _uow.SaveChanges();
         }
 
         /// <summary>
@@ -57,7 +68,7 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public QuestionOutputViewModel GetbyId(long id)
         {
-            var question = _mainContext.Questions.FirstOrDefault(u => u.Id == id);
+            var question = _questions.FirstOrDefault(u => u.Id == id);
 
             return new QuestionOutputViewModel
             {
@@ -74,7 +85,7 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public IEnumerable<QuestionOutputViewModel> GetListByPollId(long pollId)
         {
-            var questions = _mainContext.Set<Question>();
+            var questions = _uow.Set<Question>();
 
             return questions.Where(q => q.PollId == pollId)
                 .Select(question => new QuestionOutputViewModel
@@ -93,7 +104,7 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public QuestionInputViewModel GetToUpdate(long id)
         {
-            var questions = _mainContext.Set<Question>();
+            var questions = _uow.Set<Question>();
             var question = questions.FirstOrDefault(q => q.Id == id);
 
             return new QuestionInputViewModel
@@ -111,7 +122,7 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public IEnumerable<QuestionOutputViewModel> GetAll()
         {
-            var questions = _mainContext.Set<Question>();
+            var questions = _uow.Set<Question>();
 
             return questions.OrderByDescending(q => q.Id)
                 .Select(question => new QuestionOutputViewModel
@@ -129,9 +140,9 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public void Delete(long id)
         {
-            var question = _mainContext.Questions.FirstOrDefault(q => q.Id == id);
-            _mainContext.Remove(question);
-            _mainContext.SaveChanges();
+            var question = _questions.FirstOrDefault(q => q.Id == id);
+            _uow.MarkAsDeleted(question);
+            _uow.SaveChanges();
         }
 
 
@@ -142,7 +153,7 @@ namespace Hamporsesh.Application.Questions
         /// <returns></returns>
         public long GetUserTotalQuestions(long userId)
         {
-            var questions = _mainContext.Set<Question>();
+            var questions = _uow.Set<Question>();
             var user = _userService.GetById(userId);
             var userPolls = _pollService.GetListByUserId(userId);
             long totalCount = 0;

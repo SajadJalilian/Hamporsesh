@@ -49,8 +49,8 @@ namespace Web
                 app.UseHsts();
             }
 
-            var mainCntx = new MainContext();
-            mainCntx.Database.EnsureCreated();
+            // var mainCntx = new MainContext();
+            // mainCntx.Database.EnsureCreated();
 
 
 

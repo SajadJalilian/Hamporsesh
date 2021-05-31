@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hamporsesh.Application.Answers;
+using Hamporsesh.Application.Choices;
 using Microsoft.AspNetCore.Mvc;
 using Hamporsesh.Application.Core.ViewModels.Choices;
 using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Core.ViewModels.Questions;
+using Hamporsesh.Application.Polls;
+using Hamporsesh.Application.Questions;
+using Hamporsesh.Application.Users;
+using Hamporsesh.Application.Visitors;
 using Web.Extensions;
 
 namespace Web.Areas.Participation.Controllers
@@ -12,19 +18,29 @@ namespace Web.Areas.Participation.Controllers
     [Area("Participation")]
     public class PollsController : Controller
     {
-        private readonly PollService _pollService;
-        private readonly QuestionService _questionService;
-        private readonly VisitorService _visitorService;
-        private readonly AnswerService _answerService;
-        private readonly ChoiceService _choiceService;
+        private readonly IPollService _pollService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
+        private readonly IUserService _userService;
+        private readonly IChoiceService _choiceService;
+        private readonly IVisitorService _visitorService;
 
-        public PollsController()
+
+        public PollsController(
+            IPollService pollService,
+            IQuestionService questionService,
+            IAnswerService answerService,
+            IUserService userService,
+            IChoiceService choiceService,
+            IVisitorService visitorService
+        )
         {
-            _pollService = new PollService();
-            _questionService = new QuestionService();
-            _visitorService = new VisitorService();
-            _answerService = new AnswerService();
-            _choiceService = new ChoiceService();
+            _pollService = pollService;
+            _questionService = questionService;
+            _answerService = answerService;
+            _userService = userService;
+            _choiceService = choiceService;
+            _visitorService = visitorService;
         }
 
 

@@ -1,14 +1,21 @@
 ﻿using System.Collections.Generic;
+using Hamporsesh.Application.Core.ViewModels.Polls;
+using Hamporsesh.Domain.Entities;
+using Hamporsesh.Infrastructure.Data.Context;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hamporsesh.Application.Polls
 {
     public class PollService : IPollService
     {
-        private readonly MainContext _mainContext;
+        private readonly IUnitOfWork _uow;
+        private readonly DbSet<Poll> _polls;
 
-        public PollService()
+        public PollService(IUnitOfWork uow)
         {
-            _mainContext = new MainContext();
+            _uow = uow;
+            _polls = uow.Set<Poll>();
         }
 
 
@@ -17,7 +24,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public void Create(PollInputViewModelAdmin input)
         {
-            var polls = _mainContext.Set<Poll>();
+          
             var poll = new Poll
             {
                 Title = input.Title,
@@ -25,8 +32,8 @@ namespace Hamporsesh.Application.Polls
                 UserId = input.UserId
             };
 
-            polls.Add(poll);
-            _mainContext.SaveChanges();
+            _polls.Add(poll);
+            _uow.SaveChanges();
         }
 
 
@@ -35,7 +42,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public void Update(PollInputViewModelAdmin input)
         {
-            var polls = _mainContext.Set<Poll>();
+            var polls = _uow.Set<Poll>();
 
             var poll = polls.FirstOrDefault(u => u.Id == input.Id);
 
@@ -43,8 +50,8 @@ namespace Hamporsesh.Application.Polls
             poll.Description = input.Description;
             poll.Status = input.PollStatus;
 
-            _mainContext.Update(poll);
-            _mainContext.SaveChanges();
+            _uow.MarkAsModified(poll);
+            _uow.SaveChanges();
         }
 
 
@@ -53,7 +60,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public PollOutPutViewModel GetById(long id)
         {
-            var poll = _mainContext.Polls.FirstOrDefault(u => u.Id == id);
+            var poll = _polls.FirstOrDefault(u => u.Id == id);
 
             return new PollOutPutViewModel
             {
@@ -73,7 +80,7 @@ namespace Hamporsesh.Application.Polls
         /// <returns></returns>
         public long GetUserPollCount(long userId)
         {
-            var polls = _mainContext.Set<Poll>();
+            var polls = _uow.Set<Poll>();
             return polls.Count(p => p.UserId == userId);
         }
 
@@ -83,7 +90,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public IEnumerable<PollOutPutViewModel> GetListByUserId(long userId)
         {
-            var polls = _mainContext.Set<Poll>();
+            var polls = _uow.Set<Poll>();
 
             return polls.Where(p => p.UserId == userId).OrderByDescending(u => u.Id)
                 .Select(poll => new PollOutPutViewModel
@@ -101,7 +108,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public PollInputViewModelAdmin GetToUpdate(long id)
         {
-            var poll = _mainContext.Polls.FirstOrDefault(u => u.Id == id);
+            var poll = _polls.FirstOrDefault(u => u.Id == id);
 
             return new PollInputViewModelAdmin()
             {
@@ -118,7 +125,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public IEnumerable<PollOutPutViewModel> GetAll()
         {
-            var polls = _mainContext.Set<Poll>();
+            var polls = _uow.Set<Poll>();
 
             return polls.OrderByDescending(u => u.Id)
                 .Select(poll => new PollOutPutViewModel
@@ -136,9 +143,9 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public void Delete(long id)
         {
-            var poll = _mainContext.Polls.FirstOrDefault(u => u.Id == id);
-            _mainContext.Remove(poll);
-            _mainContext.SaveChanges();
+            var poll = _polls.FirstOrDefault(u => u.Id == id);
+            _uow.MarkAsDeleted(poll);
+            _uow.SaveChanges();
         }
 
 
@@ -149,7 +156,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public IEnumerable<PollOutputViewModelAdmin> GetAllAdmin()
         {
-            var polls = _mainContext.Set<Poll>();
+            var polls = _uow.Set<Poll>();
 
             return polls.OrderByDescending(u => u.Id)
                 .Select(poll => new PollOutputViewModelAdmin
@@ -170,7 +177,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public PollOutputViewModelAdmin GetByIdAdmin(long id)
         {
-            var poll = _mainContext.Polls.FirstOrDefault(u => u.Id == id);
+            var poll = _polls.FirstOrDefault(u => u.Id == id);
 
             return new PollOutputViewModelAdmin
             {
@@ -189,7 +196,7 @@ namespace Hamporsesh.Application.Polls
         /// </summary>
         public IEnumerable<PollOutputViewModelAdmin> GetListByUserIdAdmin(long userId)
         {
-            var polls = _mainContext.Set<Poll>();
+            var polls = _uow.Set<Poll>();
 
             return polls.Where(p => p.UserId == userId).OrderByDescending(u => u.Id)
                 .Select(poll => new PollOutputViewModelAdmin

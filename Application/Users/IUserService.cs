@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Hamporsesh.Application.Core.ViewModels.Users;
 
 namespace Hamporsesh.Application.Users
 {

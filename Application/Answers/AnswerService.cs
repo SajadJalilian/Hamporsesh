@@ -1,20 +1,33 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Hamporsesh.Application.Core.ViewModels.Answers;
+using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
+using Hamporsesh.Domain.Entities;
+using Hamporsesh.Infrastructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hamporsesh.Application.Answers
 {
     public class AnswerService : IAnswerService
     {
-        private readonly MainContext _mainContext;
-        private readonly QuestionService _questionService;
-        private readonly PollService _pollService;
+        private readonly IPollService _pollService;
+        private readonly IQuestionService _questionService;
+        private readonly IUnitOfWork _uow;
+        private readonly DbSet<Answer> _answers;
 
-        public AnswerService()
+
+        public AnswerService(
+            IPollService pollService,
+            IQuestionService questionService,
+            IUnitOfWork uow
+            )
         {
-            _mainContext = new MainContext();
-            _questionService = new QuestionService();
-            _pollService = new PollService();
+            _pollService = pollService;
+            _questionService = questionService;
+            _uow = uow;
+            _answers = uow.Set<Answer>();
         }
 
 
@@ -23,15 +36,13 @@ namespace Hamporsesh.Application.Answers
         /// </summary>
         public void Create(AnswerInputViewModel input)
         {
-            var mContext = new MainContext();
-            var answers = mContext.Set<Answer>();
             var answer = new Answer
             {
                 Title = input.Title,
                 QuestionId = input.QuestionId
             };
-            answers.Add(answer);
-            mContext.SaveChanges();
+            _answers.Add(answer);
+            _uow.SaveChanges();
         }
 
 
@@ -40,15 +51,14 @@ namespace Hamporsesh.Application.Answers
         /// </summary>
         public void Update(AnswerInputViewModel input)
         {
-            var mContext = new MainContext();
-            var answer = mContext.Answers.FirstOrDefault(
+            var answer = _answers.FirstOrDefault(
                 a => a.Id == input.Id);
 
 
             answer.Title = input.Title;
 
-            mContext.Update(answer);
-            mContext.SaveChanges();
+            _uow.MarkAsModified(answer);
+            _uow.SaveChanges();
         }
 
 
@@ -57,8 +67,7 @@ namespace Hamporsesh.Application.Answers
         /// </summary>
         public AnswerOutputViewModel GetById(long id)
         {
-            var mContext = new MainContext();
-            var answer = mContext.Answers.FirstOrDefault(a => a.Id == id);
+            var answer = _answers.FirstOrDefault(a => a.Id == id);
 
             return new AnswerOutputViewModel
             {
@@ -74,10 +83,8 @@ namespace Hamporsesh.Application.Answers
         /// </summary>
         public IEnumerable<AnswerOutputViewModel> GetListByQuestionId(long QuestionId)
         {
-            var mContext = new MainContext();
-            var answers = mContext.Set<Answer>();
 
-            return answers.Where(a => a.QuestionId == QuestionId)
+            return _answers.Where(a => a.QuestionId == QuestionId)
                 .Select(answer => new AnswerOutputViewModel
                 {
                     Id = answer.Id,
@@ -92,8 +99,7 @@ namespace Hamporsesh.Application.Answers
         /// </summary>
         public AnswerInputViewModel GetToUpdate(long id)
         {
-            var mContext = new MainContext();
-            var answer = mContext.Answers.FirstOrDefault(a => a.Id == id);
+            var answer = _answers.FirstOrDefault(a => a.Id == id);
 
             return new AnswerInputViewModel
             {
@@ -109,10 +115,8 @@ namespace Hamporsesh.Application.Answers
         /// </summary>
         public IEnumerable<AnswerOutputViewModel> GetAll()
         {
-            var mContext = new MainContext();
-            var answers = mContext.Set<Answer>();
 
-            return answers.OrderByDescending(u => u.Id)
+            return _answers.OrderByDescending(u => u.Id)
                 .Select(answer => new AnswerOutputViewModel
                 {
                     Id = answer.Id,
@@ -127,10 +131,9 @@ namespace Hamporsesh.Application.Answers
         /// </summary>
         public void Delete(long id)
         {
-            var mContext = new MainContext();
-            var answer = mContext.Answers.FirstOrDefault(a => a.Id == id);
-            mContext.Remove(answer);
-            mContext.SaveChanges();
+            var answer = _answers.FirstOrDefault(a => a.Id == id);
+            _uow.MarkAsDeleted(answer);
+            _uow.SaveChanges();
         }
 
 
@@ -139,13 +142,12 @@ namespace Hamporsesh.Application.Answers
         /// </summary>
         public IEnumerable<AnswerOutputViewModel> GetAllPollAnswers(long pollId)
         {
-            var answers = _mainContext.Set<Answer>();
 
             var pollQuestions = _questionService.GetListByPollId(pollId);
             List<AnswerOutputViewModel> pollAnswers = new();
             foreach (var question in pollQuestions)
             {
-                pollAnswers.Add((AnswerOutputViewModel) answers.Where(a => a.QuestionId == question.Id)
+                pollAnswers.Add((AnswerOutputViewModel)_answers.Where(a => a.QuestionId == question.Id)
                     .Select(answer => new AnswerOutputViewModel
                     {
                         Id = answer.Id,
@@ -165,7 +167,6 @@ namespace Hamporsesh.Application.Answers
         /// <returns></returns>
         public long GetUserTotalAnswers(long userId)
         {
-            var answers = _mainContext.Set<Answer>();
             var userPolls = _pollService.GetListByUserId(userId);
             var userQuestions = new List<QuestionOutputViewModel>();
             var totalCount = 0;
@@ -179,7 +180,7 @@ namespace Hamporsesh.Application.Answers
 
             foreach (var question in userQuestions)
             {
-                totalCount += answers.Count(a => a.QuestionId == question.Id);
+                totalCount += _answers.Count(a => a.QuestionId == question.Id);
             }
 
             return totalCount;

@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hamporsesh.Application.Answers;
+﻿using Hamporsesh.Application.Answers;
+using Hamporsesh.Application.Choices;
+using Hamporsesh.Application.Polls;
+using Hamporsesh.Application.Questions;
+using Hamporsesh.Application.Users;
+using Hamporsesh.Application.Visitors;
+using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap;
+using System;
 
 namespace Infrastructure.CrossCutting.Ioc
 {
@@ -21,12 +23,17 @@ namespace Infrastructure.CrossCutting.Ioc
             container.Configure(config =>
             {
               
-                //DbContext
+                // DbContext
                // config.For<IMainContext>().Use<MongoDbContext>();
                
-                //Sevices
+                // Services
                 config.For<IAnswerService>().Use<AnswerService>();
-                //TODO add all services
+                config.For<IChoiceService>().Use<ChoiceService>();
+                config.For<IPollService>().Use<PollService>();
+                config.For<IQuestionService>().Use<QuestionService>();
+                config.For<IUserService>().Use<UserService>();
+                config.For<IVisitorService>().Use<VisitorService>();
+                config.For<IUnitOfWork>().Use<MainContext>();
                 
             });
 

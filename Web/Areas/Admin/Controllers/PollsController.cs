@@ -1,10 +1,18 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Hamporsesh.Application.Answers;
+using Hamporsesh.Application.Choices;
 using Hamporsesh.Application.Core.ViewModels.Answers;
 using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Core.ViewModels.Questions;
+using Hamporsesh.Application.Polls;
+using Hamporsesh.Application.Questions;
+using Hamporsesh.Application.Users;
+using Hamporsesh.Application.Visitors;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using Web.Extensions;
+
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -12,21 +20,29 @@ namespace Web.Areas.Admin.Controllers
     [Authorize]
     public class PollsController : BaseController
     {
-        private readonly PollService _pollService;
-        private readonly QuestionService _questionService;
-        private readonly AnswerService _answerService;
-        private readonly UserService _userService;
-        private readonly ChoiceService _choiceService;
-        private readonly VisitorService _visitorService;
+        private readonly IPollService _pollService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
+        private readonly IUserService _userService;
+        private readonly IChoiceService _choiceService;
+        private readonly IVisitorService _visitorService;
 
-        public PollsController()
+
+        public PollsController(
+            IPollService pollService,
+            IQuestionService questionService, 
+            IAnswerService answerService,
+            IUserService userService,
+            IChoiceService choiceService,
+            IVisitorService visitorService
+            )
         {
-            _pollService = new PollService();
-            _questionService = new QuestionService();
-            _answerService = new AnswerService();
-            _userService = new UserService();
-            _choiceService = new ChoiceService();
-            _visitorService = new VisitorService();
+            _pollService = pollService;
+            _questionService = questionService;
+            _answerService = answerService;
+            _userService = userService;
+            _choiceService = choiceService;
+            _visitorService = visitorService;
         }
 
 

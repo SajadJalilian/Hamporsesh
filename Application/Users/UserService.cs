@@ -1,14 +1,22 @@
 ﻿using System.Collections.Generic;
+using Hamporsesh.Application.Core.ViewModels.Users;
+using Hamporsesh.Domain.Entities;
+using Hamporsesh.Infrastructure.Data.Context;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hamporsesh.Application.Users
 {
     public class UserService : IUserService
     {
-        private readonly MainContext _mContext;
+        private readonly IUnitOfWork _uow;
+        private readonly DbSet<User> _users;
 
-        public UserService()
+
+        public UserService(IUnitOfWork uow)
         {
-            _mContext = new MainContext();
+            _uow = uow;
+            _users = uow.Set<User>();
         }
 
 
@@ -17,13 +25,12 @@ namespace Hamporsesh.Application.Users
         /// </summary>
         public void Create(UserInputViewModel input)
         {
-            var users = _mContext.Set<User>();
             var user = new User
             {
                 DisplayName = input.DisplayName,
             };
-            users.Add(user);
-            _mContext.SaveChanges();
+            _users.Add(user);
+            _uow.SaveChanges();
         }
 
 
@@ -35,13 +42,13 @@ namespace Hamporsesh.Application.Users
         /// </summary>
         public void Update(UserInputViewModel input)
         {
-            var users = _mContext.Set<User>();
+            
 
-            var user = users.FirstOrDefault(u => u.Id == input.Id);
+            var user = _users.FirstOrDefault(u => u.Id == input.Id);
 
             user.DisplayName = input.DisplayName;
-            _mContext.Update(user);
-            _mContext.SaveChanges();
+            _uow.MarkAsModified(user);
+            _uow.SaveChanges();
         }
 
 
@@ -51,8 +58,8 @@ namespace Hamporsesh.Application.Users
         /// </summary>
         public UserOutputViewModel GetById(long id)
         {
-            var users = _mContext.Set<User>();
-            var user = users.FirstOrDefault(u => u.Id == id);
+            
+            var user = _users.FirstOrDefault(u => u.Id == id);
 
             return new UserOutputViewModel
             {
@@ -73,7 +80,7 @@ namespace Hamporsesh.Application.Users
         /// </summary>
         public UserInputViewModel GetToUpdate(long id)
         {
-            var user = _mContext.Users.FirstOrDefault(u => u.Id == id);
+            var user = _users.FirstOrDefault(u => u.Id == id);
             return new UserInputViewModel
             {
                 Id = user.Id,
@@ -87,9 +94,9 @@ namespace Hamporsesh.Application.Users
         /// </summary>
         public IEnumerable<UserOutputViewModel> GetAll()
         {
-            var users = _mContext.Set<User>();
+            
 
-            return users.OrderByDescending(u => u.Id)
+            return _users.OrderByDescending(u => u.Id)
                   .Select(user => new UserOutputViewModel
                   {
                       Id = user.Id,
@@ -106,10 +113,10 @@ namespace Hamporsesh.Application.Users
         /// </summary>
         public void Delete(long id)
         {
-            var users = _mContext.Set<User>();
-            var user = users.FirstOrDefault(u => u.Id == id);
-            _mContext.Remove(user);
-            _mContext.SaveChanges();
+            
+            var user = _users.FirstOrDefault(u => u.Id == id);
+            _uow.MarkAsDeleted(user);
+            _uow.SaveChanges();
         }
 
 

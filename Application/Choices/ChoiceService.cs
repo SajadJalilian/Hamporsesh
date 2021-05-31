@@ -2,24 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using Hamporsesh.Application.Answers;
+using Hamporsesh.Application.Core.ViewModels.Choices;
+using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Users;
+using Hamporsesh.Domain.Entities;
+using Hamporsesh.Infrastructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hamporsesh.Application.Choices
 {
     public class ChoiceService : IChoiceService
     {
-        private readonly MainContext _mainContext;
-        private readonly UserService _userService;
-        private readonly AnswerService _answerService;
-        private readonly PollService _pollService;
+        private readonly IUnitOfWork _uow;
+        private readonly IUserService _userService;
+        private readonly IAnswerService _answerService;
+        private readonly IPollService _pollService;
+        private readonly DbSet<Choice> _choices;
 
-        public ChoiceService()
+
+        public ChoiceService(
+                IUnitOfWork uow,
+                IUserService userService,
+                IAnswerService answerService,
+                IPollService pollService
+            )
         {
-            _mainContext = new MainContext();
-            _userService = new UserService();
-            _answerService = new AnswerService();
-            _pollService = new PollService();
+            _uow = uow;
+            _userService = userService;
+            _answerService = answerService;
+            _pollService = pollService;
+            _choices = uow.Set<Choice>();
+
         }
 
 
@@ -28,7 +42,7 @@ namespace Hamporsesh.Application.Choices
         /// </summary>
         public void Create(ChoiceInputViewModel input)
         {
-            var _choices = _mainContext.Set<Choice>();
+            var _choices = _uow.Set<Choice>();
 
             foreach (var question in input.Questions)
             {
@@ -47,7 +61,7 @@ namespace Hamporsesh.Application.Choices
                 }
             }
 
-            _mainContext.SaveChanges();
+            _uow.SaveChanges();
         }
 
 
@@ -59,7 +73,7 @@ namespace Hamporsesh.Application.Choices
         /// <returns></returns>
         public IEnumerable<PollOutPutViewModel> GetPollsByParticipatedUserId(long id)
         {
-            var userChoices = _mainContext.Choices.Where(r => r.UserId == id);
+            var userChoices = _choices.Where(r => r.UserId == id);
             var user = _userService.GetById(id);
             var pollIds = new HashSet<long>();
             var polls = new List<PollOutPutViewModel>();
@@ -93,7 +107,7 @@ namespace Hamporsesh.Application.Choices
         /// </summary>
         public IEnumerable<ChoiceOutputViewModel> GetUserPollChoices(long userId, long pollid)
         {
-            var choices = _mainContext.Set<Choice>();
+            var choices = _uow.Set<Choice>();
 
             return choices.Where(c => c.PollId == pollid && c.UserId == userId)
                 .Select(choices => new ChoiceOutputViewModel
@@ -114,7 +128,7 @@ namespace Hamporsesh.Application.Choices
         /// <returns></returns>
         public long GetPollTotalResponses(long pollId)
         {
-            var choices = _mainContext.Set<Choice>();
+            var choices = _uow.Set<Choice>();
 
             return choices.Count(c => c.PollId == pollId);
         }
@@ -128,7 +142,7 @@ namespace Hamporsesh.Application.Choices
         public long GetAllPollsTotalResponses(long userId)
         {
             var userPolls = _pollService.GetListByUserId(userId);
-            var choices = _mainContext.Set<Choice>();
+            var choices = _uow.Set<Choice>();
             long totalCount = 0;
 
             foreach (var poll in userPolls)
@@ -151,7 +165,7 @@ namespace Hamporsesh.Application.Choices
         /// </summary>
         public ChoicesLas30DaysViewModel GetLast30DaysResponses()
         {
-            var choices = _mainContext.Set<Choice>();
+            var choices = _uow.Set<Choice>();
             var firstDay = DateTime.Today.AddDays(-30);
             var allChoices = choices.Where(c => c.CreateDateTime >= firstDay);
             var days = new List<DateTime>();
@@ -195,7 +209,7 @@ namespace Hamporsesh.Application.Choices
         /// <returns></returns>
         public long GetAnswerTotalResponses(long id)
         {
-            var choices = _mainContext.Set<Choice>();
+            var choices = _uow.Set<Choice>();
             return choices.Count(c => c.AnswereId == id);
         }
     }
