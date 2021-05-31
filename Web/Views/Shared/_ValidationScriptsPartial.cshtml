@@ -1,0 +1,44 @@
+﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+<script>
+
+    function onSuccessCreate(data) {
+        if (data.result == true) {
+            alert("Item created: " + data.message)
+            window.location.href = data.link;
+        } else {
+            alert("Opration is failed: " + data.message);
+        }
+    }
+
+    function onSuccessUpdate(data) {
+        if (data.result == true) {
+            alert(data.message);
+            window.location.href = data.link;
+        } else {
+            alert(data.message);
+        }
+    }
+
+
+    function onSuccessSavePoll(data) {
+        if (data.result == true) {
+            alert(data.message);
+            window.location.href = data.link;
+        } else {
+            alert(data.message);
+        }
+    }
+
+
+    function onSuccessDelete(data) {
+        if (data.result == true) {
+            alert(data.message);
+            window.location.href = data.link;
+        } else {
+            alert("Opration is failed: " + data.message);
+        }
+    }
+</script>

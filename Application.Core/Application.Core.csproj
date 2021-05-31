@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Hamporsesh.Application.Core</AssemblyName>
+    <RootNamespace>Hamporsesh.Application.Core</RootNamespace>
+  </PropertyGroup>
+
+</Project>

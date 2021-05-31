@@ -1,0 +1,59 @@
+﻿@model Hamporsesh.Application.Core.ViewModels.Users.ProfileOutputViewModel
+@{
+    ViewBag.Title = "ثبت نام";
+}
+
+<h2>
+    @if (!string.IsNullOrEmpty(Model.User.DisplayName))
+    {
+        @Model.User.DisplayName
+    }
+    Profile
+</h2>
+<a asp-area="Admin" asp-action="ChangePassword" asp-controller="Accounts">ChangePassword</a>
+
+<br />
+<br />
+<h3>User Polls</h3>
+<br />
+<div>
+    @Html.ActionLink(linkText: "Create Poll", actionName: "Create", controllerName: "polls", routeValues: new { userId = Model.User.Id }, new {@class = "btn-success"})
+</div>
+
+
+
+<table id="bootstrap-data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>عنوان</th>
+            <th>موضوع</th>
+            <th>تاریخ ایجاد</th>
+            <th>تعداد شرکت‌کننده‌ها</th>
+            <th>وضعیت</th>
+            <th>عملیات</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var poll in Model.Polls)
+        {
+            <tr>
+                <td><a href="@Url.ActionLink(action:"Details",controller:"Polls", values: new {id = poll.Id})">@poll.Title</a></td>
+                <td>@poll.Description</td>
+                <td>@poll.CreateDateTimeStr</td>
+                <td>@poll.TotalResponses</td>
+                <td>@poll.Status.ToString()</td>
+                <td> 
+                    <a href="@Url.Action(action: "Delete", controller: "polls", values: new { id = poll.Id, returnUrl = Url.RouteUrl(ViewContext.RouteData.Values)})" class=" btn btn-danger">
+                        حذف
+                    </a>
+                </td>
+
+            </tr>
+        }
+
+
+    </tbody>
+</table>

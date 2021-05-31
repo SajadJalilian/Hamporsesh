@@ -1,0 +1,33 @@
+﻿@model Hamporsesh.Application.Core.ViewModels.Polls.PollResultsViewModel
+
+@{
+    int i = 1;
+}
+
+<h3>نتایج نظر سنجی با عنوان : @Model.PollTitle</h3>
+<hr/>
+
+@foreach (var result in Model.Questions)
+{
+
+    <div class="panel">
+        <div class="panel panel-heading">
+            <h5> @i) @result.QuestionName</h5>
+        </div>
+
+        <div class="panel panel-body">
+            <div class="row">
+                @foreach (var ans in result.AnswersResults)
+                {
+                    <div class="col-3">
+                        <strong>@ans.AnswerName :  @ans.TotalResponses انتخاب</strong><br/>
+                    </div>
+                }
+            </div>
+        
+        </div>
+    </div>
+
+    i++;
+
+}

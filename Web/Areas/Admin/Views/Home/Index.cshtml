@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Hamporsesh.Web.ViewModels.Polls.PollOutPutViewModel>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+@TempData["message"]
+
+<h3>آخرین نظرسنجی‌های ایجاد شده</h3>
+<br />
+<br />
+
+<div>
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>
+                @Html.ActionLink(linkText: item.Title, controllerName: "polls", actionName: "participate", routeValues: new { id = item.Id })
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,73 @@
+﻿@model Hamporsesh.Application.Core.ViewModels.Polls.PollDetailsViewModelAdmin
+
+@{
+    ViewData["Title"] = "Participate";
+}
+
+
+<div>
+    <h3>
+        مالک نظرسنجی: <a asp-area="Admin" asp-controller="Users" asp-action="Profile" asp-route-id="@Model.Poll.UserId">@Model.User.DisplayName</a>
+    </h3>
+
+    <hr />
+    <dl class="row">
+
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Poll.Title)
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Poll.Description)
+        </dd>
+        <dd class="col-sm-10" style="font-size:11px; color:dimgray">
+            @Html.DisplayFor(model => model.Poll.CreateDateTimeStr)
+        </dd>
+    </dl>
+</div>
+
+
+<div>
+    <h5> لیست سوالات</h5>
+    <hr />
+    <form asp-action="Participate" method="post" asp-controller="Polls" data-ajax="true" data-ajax-method="Post" data-ajax-success="onSuccessCreate(data)">
+        <input type="hidden" name="PollId" value="@Model.Poll.Id" />
+        
+        @foreach (var item in Model.Questions)
+        {
+
+            <strong>
+                @item.Question.Title
+            </strong>
+            <br />
+            @foreach (var answer in item.Answers)
+            {
+                if (item.Question.Type == 0)
+                {
+                    <input type="checkbox" name="AnsweresId" value="@(item.Question.Id+"-"+answer.Id)" id="@answer.Id" />
+                    <label for="@answer.Id">@answer.Title</label>
+
+                    <br />
+                }
+                else
+                {
+                    <input type="checkbox" name="AnsweresId" value="@(item.Question.Id+"-"+answer.Id)" id="@answer.Id" />
+                    <label for="@answer.Id">@answer.Title</label>
+
+                    <br />
+                }
+
+            }
+            <hr />
+        }
+
+        <input type="submit" name="submit" value="submit" />
+
+    </form>
+</div>
+
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

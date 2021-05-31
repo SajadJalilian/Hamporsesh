@@ -1,0 +1,42 @@
+﻿@model Hamporsesh.Web.ViewModels.Account.LoginViewModel
+@{
+    ViewData["Title"] = "ورود";
+}
+
+@section Banner
+{
+    <h2 class="text-white">وارد شورد</h2>
+
+}
+
+<!--  Contact START  -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-sm-12">
+                <form class="contact__form" method="post" asp-action="Login">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <input asp-for="UserName" class="form-control" placeholder="نام‌کاربری" required>
+                        </div>
+                        <div class="col-12 form-group">
+                            <input type="password" asp-for="Password" class="form-control" placeholder="پسورد" required>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <input name="submit" type="submit" class=" btn btn-hero btn-circled" value="ورود">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--  CONTACT END  -->
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="seo & digital marketing">
+    <meta name="keywords" content="marketing,digital marketing,creative, agency, startup,onepage, clean, modern,seo,business, company">
+    <meta name="author" content="sajadjalilian.github.io">
+    <title>@ViewData["Title"] - Hamporsesh</title>
+
+    <!-- bootstrap.min css -->
+    <link rel="stylesheet" href="site/plugins/bootstrap/css/bootstrap.rtl.min.css">
+    <!-- Icofont Css -->
+    <link rel="stylesheet" href="site/plugins/fontawesome/css/all.css">
+    <!-- animate.css -->
+    <link rel="stylesheet" href="site/plugins/animate-css/animate.css">
+    <!-- Icofont -->
+    <link rel="stylesheet" href="site/plugins/icofont/icofont.css">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="site/css/style.css">
+
+
+</head>
+
+
+<body data-spy="scroll" data-target=".fixed-top">
+
+
+<nav class="navbar navbar-expand-lg fixed-top trans-navigation">
+    <div class="container">
+        <a class="navbar-brand" asp-action="Index">
+            <img src="site/images/logo.png" alt="" class="img-fluid b-logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+                <i class="fa fa-bars"></i>
+            </span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+            <ul class="navbar-nav ">
+
+                <li class="nav-item">
+                    <a class="nav-link smoth-scroll" asp-action="Index">خانه</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link smoth-scroll" asp-action="Service">سرویس‌ها</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link smoth-scroll" href="/about">درباره‌ی ما</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link smoth-scroll" asp-action="Contact">تماس با ما</a>
+                </li>
+
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link smoth-scroll"  asp-controller="Accounts" asp-action="Login">ورود</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link smoth-scroll"  asp-controller="Accounts" asp-action="Register">ثبت‌نام</a>
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    
+                    <li class="nav-item">
+                        <a class="nav-link smoth-scroll" asp-area="admin" asp-controller="dashboard" asp-action="Index">دشبورد</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link smoth-scroll" asp-controller="Accounts" asp-action="Logout">Logout</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--MAIN HEADER AREA END -->
+
+<!--MAIN BANNER AREA START -->
+<div class="page-banner-area page-contact" id="page-banner">
+    <div class="overlay dark-overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 m-auto text-center col-sm-12 col-md-12">
+                <div class="banner-content content-padding">
+
+                    @await RenderSectionAsync("Banner", required: false)
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--MAIN HEADER AREA END -->
+
+
+@RenderBody()
+
+
+<!--  FOOTER AREA START  -->
+<section id="footer" class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-sm-8 col-md-8">
+                <div class="footer-widget footer-link">
+                    <h4>
+                        است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است،
+                    </h4>
+                    <p>
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک 
+                        است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، 
+                        و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای
+                        متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+                                       
+                        </p>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-md-4">
+                <div class="footer-widget footer-link">
+                    <h4>درباره‌ی ما</h4>
+                    <ul>
+                        <li>
+                            <a href="#">درباره</a>
+                        </li>
+                        <li>
+                            <a href="#">سرویس‌ها</a>
+                        </li>
+                        <li>
+                            <a href="#">قیمت‌ها</a>
+                        </li>
+                        <li>
+                            <a href="#">تیم ما</a>
+                        </li>
+                        <li>
+                            <a href="#">گزارش‌کار</a>
+                        </li>
+                        <li>
+                            <a href="#">وبلاگ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-sm-6 col-md-6">
+                <div class="footer-widget footer-link">
+                    <h4>لینک‌های سریع</h4>
+                    <ul>
+                        <li>
+                            <a href="#">لینک اول</a>
+                        </li>
+                        <li>
+                            <a href="#">لینک دوم</a>
+                        </li>
+                        <li>
+                            <a href="#">لینک سوم</a>
+                        </li>
+                      
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-md-6">
+                <div class="footer-widget footer-text">
+                    <h4>آدرس ما</h4>
+                    <p class="mail"><span>پست الکترونیک:</span> promdise@gmail.com</p>
+                    <p><span>شماره تماس :</span>+202-277-3894</p>
+                    <p><span>آدرس:</span> ایران - تهران - پونک، خیابان اول، کوچه دوم</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="footer-copy">
+                    © کلیه‌ی حقوق محفوظ است
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--  FOOTER AREA END  -->
+
+
+<!-- 
+Essential Scripts
+=====================================-->
+
+
+<!-- Main jQuery -->
+<script src="site/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4.3.1 -->
+<script src="site/plugins/bootstrap/js/popper.min.js"></script>
+<script src="site/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- Woow animtaion -->
+<script src="site/plugins/counterup/wow.min.js"></script>
+<script src="site/plugins/counterup/jquery.easing.1.3.js"></script>
+<!-- Counterup -->
+<script src="site/plugins/counterup/jquery.waypoints.js"></script>
+<script src="site/plugins/counterup/jquery.counterup.min.js"></script>
+
+<!-- Google Map -->
+<script src="site/plugins/google-map/gmap3.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkeLMlsiwzp6b3Gnaxd86lvakimwGA6UA&callback=initMap"></script>
+<!-- Contact Form -->
+<script src="site/plugins/jquery/contact.js"></script>
+<script src="site/js/custom.js"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

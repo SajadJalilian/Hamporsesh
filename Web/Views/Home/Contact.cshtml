@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "تماس با ما";
+}
+
+@section Banner
+{
+    <h1 class="text-white">تماس با ما</h1>
+    <p>پیشنهادات و انتقادات و مشکلات خود را با ما درمیان بگذارید</p>
+}
+
+
+<!--MAIN HEADER AREA END -->
+<!--  Contact START  -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-sm-12 col-md-12">
+                <div class="mb-5">
+                    <h2 class="mb-2">ارسال پیام به ما</h2>
+                    <p>نیازمندی خاصی دارید؟ پروژه‌ای در سر دارید؟ نیاز به مشاوره دارید؟ با ما تماس بگیرید</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-7 col-sm-12">
+                <form class="contact__form" method="post" action="mail.php">
+                    <!-- form message -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-success contact__msg" style="display: none" role="alert">
+                                Your message was sent successfully.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end message -->
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <input name="name" type="text" class="form-control" placeholder="نام" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <input name="email" type="email" class="form-control" placeholder="ایمیل" required>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input name="subject" type="text" class="form-control" placeholder="موضوع" required>
+                        </div>
+                        <div class="col-12 form-group">
+                            <textarea name="message" class="form-control" rows="6" placeholder="پیاتم" required></textarea>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <input name="submit" type="submit" class=" btn btn-hero btn-circled" value="ارسال پیام">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-5 pl-4 mt-4 mt-lg-0">
+                <h4>آدرس دفتر</h4>
+                <p class="mb-3">تهران پونک خیابان اول، کوچه‌ی دوم</p>
+                <h4>شماره تماس</h4>
+                <p class="mb-3">+23 456 7920</p>
+                <h4>پست الکترونیکی</h4>
+                <p class="mb-3">support@email.com</p>
+                <h4>وبسایت ما</h4>
+                <p>www.companyname.com</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!--  CONTACT END  -->
+
+<!--  Google Map START  -->
+<section id="map" class="section-padding ">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-6 col-md-3">
+            </div>
+        </div>
+    </div>
+</section>
+<!--  Google Map END  -->

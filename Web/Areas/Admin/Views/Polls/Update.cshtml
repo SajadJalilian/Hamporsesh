@@ -1,0 +1,17 @@
+﻿@model Hamporsesh.Application.Core.ViewModels.Polls.PollInputViewModelAdmin
+
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+@Html.Partial("_SaveForm", Model)
+
+<div>
+    @Html.ActionLink(linkText: "back", actionName: "Details", controllerName: "Polls", routeValues: new { id = Model.Id })
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
