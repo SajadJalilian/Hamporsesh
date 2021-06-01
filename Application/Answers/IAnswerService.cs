@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Hamporsesh.Application.Core.ViewModels.Answers;
+﻿using Hamporsesh.Application.Core.ViewModels.Answers;
+using System.Collections.Generic;
 
 namespace Hamporsesh.Application.Answers
 {
@@ -18,12 +18,12 @@ namespace Hamporsesh.Application.Answers
         /// <summary>
         /// 
         /// </summary>
-        AnswerOutputViewModel GetById(long id);
+        AnswerOutputDto GetById(long id);
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<AnswerOutputViewModel> GetListByQuestionId(long QuestionId);
+        IEnumerable<AnswerOutputDto> GetListByQuestionId(long QuestionId);
 
         /// <summary>
         /// 
@@ -33,7 +33,7 @@ namespace Hamporsesh.Application.Answers
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<AnswerOutputViewModel> GetAll();
+        IEnumerable<AnswerOutputDto> GetAll();
 
         /// <summary>
         /// 
@@ -43,7 +43,7 @@ namespace Hamporsesh.Application.Answers
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<AnswerOutputViewModel> GetAllPollAnswers(long pollId);
+        IEnumerable<AnswerOutputDto> GetAllPollAnswers(long pollId);
 
         /// <summary>
         /// 

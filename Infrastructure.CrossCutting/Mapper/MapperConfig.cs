@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Infrastructure.CrossCutting.Mapper.Profiles;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using TaskoMask.Application.Mapper.Profiles;
 
 namespace Infrastructure.CrossCutting.Mapper
 {
@@ -10,10 +10,17 @@ namespace Infrastructure.CrossCutting.Mapper
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddAutoMapper(typeof(OrganizationMappingProfile));
-            services.AddAutoMapper(typeof(ProjectMappingProfile));
+            
+
+            services.AddAutoMapper(typeof(AccountProfile));
+            services.AddAutoMapper(typeof(AnswerOutputViewModel));
+            services.AddAutoMapper(typeof(AnswerProfile));
+            services.AddAutoMapper(typeof(ChoiceProfile));
+            services.AddAutoMapper(typeof(DashboardProfile));
+            services.AddAutoMapper(typeof(PollProfile));
+            services.AddAutoMapper(typeof(QuestionProfile));
             services.AddAutoMapper(typeof(UserProfile));
-            services.AddAutoMapper(typeof(CardMappingProfile));
+            services.AddAutoMapper(typeof(VisitorProfile));
 
         }
     }

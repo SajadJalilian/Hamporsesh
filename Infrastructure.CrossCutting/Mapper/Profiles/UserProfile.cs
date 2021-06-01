@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
-using TaskoMask.Application.Commands.Models.Users;
-using TaskoMask.Application.Services.Users.Dto;
-using TaskoMask.Application.Queries.ViewMoldes.Account;
-using TaskoMask.Domain.Models;
 
-namespace TaskoMask.Application.Mapper.Profiles
+namespace Infrastructure.CrossCutting.Mapper.Profiles
 {
     public class UserProfile : Profile
     {

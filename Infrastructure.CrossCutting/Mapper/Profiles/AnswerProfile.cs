@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Hamporsesh.Application.Core.ViewModels.Answers;
+using Hamporsesh.Domain.Entities;
 
 namespace Infrastructure.CrossCutting.Mapper.Profiles
 {
-    class AnswerProfile
+    class AnswerProfile: Profile
     {
+        public AnswerProfile()
+        {
+            //CreateMap<User, UserInput>();
+            CreateMap<Answer, AnswerOutputDto>();
+            CreateMap<Answer, AnswerInputDto>();
+        }
     }
 }

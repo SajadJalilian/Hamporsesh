@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using AutoMapper;
 using Hamporsesh.Application.Core.ViewModels.Answers;
 using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
@@ -7,6 +6,8 @@ using Hamporsesh.Application.Questions;
 using Hamporsesh.Domain.Entities;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hamporsesh.Application.Answers
 {
@@ -16,17 +17,19 @@ namespace Hamporsesh.Application.Answers
         private readonly IPollService _pollService;
         private readonly IQuestionService _questionService;
         private readonly IUnitOfWork _uow;
-
+        private readonly IMapper _mapper;
 
         public AnswerService(
             IPollService pollService,
             IQuestionService questionService,
-            IUnitOfWork uow
+            IUnitOfWork uow,
+            IMapper mapper
         )
         {
             _pollService = pollService;
             _questionService = questionService;
             _uow = uow;
+            _mapper = mapper;
             _answers = uow.Set<Answer>();
         }
 
@@ -60,30 +63,20 @@ namespace Hamporsesh.Application.Answers
 
         /// <summary>
         /// </summary>
-        public AnswerOutputViewModel GetById(long id)
+        public AnswerOutputDto GetById(long id)
         {
             var answer = _answers.FirstOrDefault(a => a.Id == id);
 
-            return new AnswerOutputViewModel
-            {
-                Id = answer.Id,
-                Title = answer.Title,
-                QuestionId = answer.QuestionId
-            };
+            return _mapper.Map<AnswerOutputDto>(answer);
         }
 
 
         /// <summary>
         /// </summary>
-        public IEnumerable<AnswerOutputViewModel> GetListByQuestionId(long QuestionId)
+        public IEnumerable<AnswerOutputDto> GetListByQuestionId(long QuestionId)
         {
             return _answers.Where(a => a.QuestionId == QuestionId)
-                .Select(answer => new AnswerOutputViewModel
-                {
-                    Id = answer.Id,
-                    Title = answer.Title,
-                    QuestionId = answer.QuestionId
-                }).ToList();
+                .Select(answer => _mapper.Map<AnswerOutputDto>(answer)).ToList();
         }
 
 
@@ -93,26 +86,16 @@ namespace Hamporsesh.Application.Answers
         {
             var answer = _answers.FirstOrDefault(a => a.Id == id);
 
-            return new AnswerInputDto
-            {
-                Id = answer.Id,
-                QuestionId = answer.QuestionId,
-                Title = answer.Title
-            };
+            return _mapper.Map<AnswerInputDto>(answer);
         }
 
 
         /// <summary>
         /// </summary>
-        public IEnumerable<AnswerOutputViewModel> GetAll()
+        public IEnumerable<AnswerOutputDto> GetAll()
         {
             return _answers.OrderByDescending(u => u.Id)
-                .Select(answer => new AnswerOutputViewModel
-                {
-                    Id = answer.Id,
-                    Title = answer.Title,
-                    QuestionId = answer.QuestionId
-                }).ToList();
+                .Select(answer => _mapper.Map<AnswerOutputDto>(answer)).ToList();
         }
 
 
@@ -127,18 +110,13 @@ namespace Hamporsesh.Application.Answers
 
         /// <summary>
         /// </summary>
-        public IEnumerable<AnswerOutputViewModel> GetAllPollAnswers(long pollId)
+        public IEnumerable<AnswerOutputDto> GetAllPollAnswers(long pollId)
         {
             var pollQuestions = _questionService.GetListByPollId(pollId);
-            List<AnswerOutputViewModel> pollAnswers = new();
+            List<AnswerOutputDto> pollAnswers = new();
             foreach (var question in pollQuestions)
-                pollAnswers.Add((AnswerOutputViewModel)_answers.Where(a => a.QuestionId == question.Id)
-                    .Select(answer => new AnswerOutputViewModel
-                    {
-                        Id = answer.Id,
-                        QuestionId = answer.QuestionId,
-                        Title = answer.Title
-                    }));
+                pollAnswers.Add((AnswerOutputDto)_answers.Where(a => a.QuestionId == question.Id)
+                    .Select(answer => _mapper.Map<AnswerOutputDto>(answer)));
 
             return pollAnswers;
         }
