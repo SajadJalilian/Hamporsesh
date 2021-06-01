@@ -1,12 +1,13 @@
 ﻿using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Choices;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Hamporsesh.Application.Core.ViewModels.Answers;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Application.Users;
 using Hamporsesh.Application.Visitors;
+using Hamporsesh.Infrastructure.Data.Context;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web.Extensions;
 
 namespace Web.Areas.Admin.Controllers
@@ -19,7 +20,7 @@ namespace Web.Areas.Admin.Controllers
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
         private readonly IUserService _userService;
-
+        private readonly IUnitOfWork _uow;
 
         public AnswersController(
             IPollService pollService,
@@ -27,13 +28,16 @@ namespace Web.Areas.Admin.Controllers
             IAnswerService answerService,
             IUserService userService,
             IChoiceService choiceService,
-            IVisitorService visitorService
+            IVisitorService visitorService,
+            IUnitOfWork uow
+
         )
         {
             _pollService = pollService;
             _questionService = questionService;
             _answerService = answerService;
             _userService = userService;
+            _uow = uow;
         }
 
 
@@ -46,7 +50,7 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             return View();
@@ -62,7 +66,7 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             var model = new AnswerInputViewModel
@@ -83,12 +87,13 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             _answerService.Create(input);
+            _uow.SaveChanges();
 
-            return RedirectToAction("Details", "Questions", new {id = input.QuestionId});
+            return RedirectToAction("Details", "Questions", new { id = input.QuestionId });
         }
 
 
@@ -102,7 +107,7 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             var answer = _answerService.GetById(id);
@@ -120,7 +125,7 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             var answer = _answerService.GetById(id);
@@ -142,15 +147,16 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             var answer = _answerService.GetToUpdate(input.Id);
             var question = _questionService.GetbyId(answer.QuestionId);
 
             _answerService.Update(input);
+            _uow.SaveChanges();
 
-            return RedirectToAction("Details", "Questions", new {id = question.Id});
+            return RedirectToAction("Details", "Questions", new { id = question.Id });
         }
 
 
@@ -165,14 +171,15 @@ namespace Web.Areas.Admin.Controllers
                 if (!ModelState.IsValid)
                 {
                     var errors = Utilities.GetModelStateErrors(ModelState);
-                    return Json(new {result = false, message = errors});
+                    return Json(new { result = false, message = errors });
                 }
 
             var ans = _answerService.GetById(id);
             var question = _questionService.GetbyId(ans.QuestionId);
 
             _answerService.Delete(id);
-            return RedirectToAction("Details", "Questions", new {id = question.Id});
+            _uow.SaveChanges();
+            return RedirectToAction("Details", "Questions", new { id = question.Id });
         }
     }
 }

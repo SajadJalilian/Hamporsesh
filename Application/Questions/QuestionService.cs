@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Users;
 using Hamporsesh.Domain.Entities;
 using Hamporsesh.Infrastructure.Data.Context;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hamporsesh.Application.Questions
 {
     public class QuestionService : IQuestionService
     {
-        private readonly IUserService _userService;
-        private readonly IUnitOfWork _uow;
         private readonly IPollService _pollService;
         private readonly DbSet<Question> _questions;
+        private readonly IUnitOfWork _uow;
+        private readonly IUserService _userService;
 
         public QuestionService(
             IUserService userService,
             IUnitOfWork uow,
             IPollService pollService
-            )
+        )
         {
             _userService = userService;
             _uow = uow;
@@ -30,7 +30,6 @@ namespace Hamporsesh.Application.Questions
 
 
         /// <summary>
-        /// 
         /// </summary>
         public void Create(QuestionInputViewModel input)
         {
@@ -43,12 +42,10 @@ namespace Hamporsesh.Application.Questions
             };
 
             questions.Add(question);
-            _uow.SaveChanges();
         }
 
 
         /// <summary>
-        /// 
         /// </summary>
         public void Update(QuestionInputViewModel input)
         {
@@ -60,11 +57,9 @@ namespace Hamporsesh.Application.Questions
             question.Type = input.Type;
 
             questions.Update(question);
-            _uow.SaveChanges();
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public QuestionOutputViewModel GetbyId(long id)
         {
@@ -81,7 +76,6 @@ namespace Hamporsesh.Application.Questions
 
 
         /// <summary>
-        /// 
         /// </summary>
         public IEnumerable<QuestionOutputViewModel> GetListByPollId(long pollId)
         {
@@ -94,13 +88,12 @@ namespace Hamporsesh.Application.Questions
                     Title = question.Title,
                     Type = question.Type,
                     PollId = question.PollId,
-                    CreateDateTime = question.CreateDateTime,
+                    CreateDateTime = question.CreateDateTime
                 }).ToList();
         }
 
 
         /// <summary>
-        /// 
         /// </summary>
         public QuestionInputViewModel GetToUpdate(long id)
         {
@@ -118,7 +111,6 @@ namespace Hamporsesh.Application.Questions
 
 
         /// <summary>
-        /// 
         /// </summary>
         public IEnumerable<QuestionOutputViewModel> GetAll()
         {
@@ -136,18 +128,15 @@ namespace Hamporsesh.Application.Questions
 
 
         /// <summary>
-        /// 
         /// </summary>
         public void Delete(long id)
         {
             var question = _questions.FirstOrDefault(q => q.Id == id);
             _uow.MarkAsDeleted(question);
-            _uow.SaveChanges();
         }
 
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -158,10 +147,7 @@ namespace Hamporsesh.Application.Questions
             var userPolls = _pollService.GetListByUserId(userId);
             long totalCount = 0;
 
-            foreach (var poll in userPolls)
-            {
-                totalCount += questions.Count(q => q.PollId == poll.Id);
-            }
+            foreach (var poll in userPolls) totalCount += questions.Count(q => q.PollId == poll.Id);
 
             return totalCount;
         }

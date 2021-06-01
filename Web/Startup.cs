@@ -1,22 +1,26 @@
-using System;
+using Hamporsesh.Infrastructure.Data.Context;
+using Infrastructure.CrossCutting.Identity;
 using Infrastructure.CrossCutting.Ioc;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using System;
 namespace Web
 {
     public class Startup
     {
+        private readonly IUnitOfWork _uow;
         public IConfiguration Configuration { get; }
 
 
-        public Startup(IConfiguration configuration)
+        public Startup(
+            IConfiguration configuration,
+            IUnitOfWork uow
+        )
         {
+            _uow = uow;
             Configuration = configuration;
         }
 
@@ -24,14 +28,10 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-           
             services.AddControllersWithViews();
+            services.AddIdentityConfiguration(Configuration);
 
-
-         
-
-
-          return  services.ConfigureIocContainer(Configuration);
+            return services.ConfigureIocContainer(Configuration);
         }
 
 
@@ -48,10 +48,6 @@ namespace Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            // var mainCntx = new MainContext();
-            // mainCntx.Database.EnsureCreated();
-
 
 
             app.UseHttpsRedirection();

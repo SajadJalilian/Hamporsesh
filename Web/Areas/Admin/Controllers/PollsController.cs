@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Hamporsesh.Infrastructure.Data.Context;
 using Web.Extensions;
 
 
@@ -26,16 +27,18 @@ namespace Web.Areas.Admin.Controllers
         private readonly IUserService _userService;
         private readonly IChoiceService _choiceService;
         private readonly IVisitorService _visitorService;
+        private readonly IUnitOfWork _uow;
 
 
         public PollsController(
             IPollService pollService,
-            IQuestionService questionService, 
+            IQuestionService questionService,
             IAnswerService answerService,
             IUserService userService,
             IChoiceService choiceService,
-            IVisitorService visitorService
-            )
+            IVisitorService visitorService,
+            IUnitOfWork uow
+        )
         {
             _pollService = pollService;
             _questionService = questionService;
@@ -43,6 +46,7 @@ namespace Web.Areas.Admin.Controllers
             _userService = userService;
             _choiceService = choiceService;
             _visitorService = visitorService;
+            _uow = uow;
         }
 
 
@@ -116,6 +120,7 @@ namespace Web.Areas.Admin.Controllers
             }
 
             _pollService.Create(input);
+            _uow.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -154,7 +159,7 @@ namespace Web.Areas.Admin.Controllers
 
             _pollService.Update(input);
 
-
+            _uow.SaveChanges();
             return RedirectToAction("Details", new {id = input.Id});
         }
 
@@ -208,6 +213,7 @@ namespace Web.Areas.Admin.Controllers
             if (poll.UserId == userId)
             {
                 _pollService.Delete(id);
+                _uow.SaveChanges();
             }
 
             if (returnUrl is not null)

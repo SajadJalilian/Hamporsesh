@@ -7,6 +7,7 @@ using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Application.Users;
 using Web.Extensions;
+using Hamporsesh.Infrastructure.Data.Context;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -19,19 +20,21 @@ namespace Web.Areas.Admin.Controllers
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
         private readonly IUserService _userService;
-
+        private readonly IUnitOfWork _uow;
 
         public QuestionsController(
             IPollService pollService,
             IQuestionService questionService,
             IAnswerService answerService,
-            IUserService userService
+            IUserService userService,
+            IUnitOfWork uow
         )
         {
             _pollService = pollService;
             _questionService = questionService;
             _answerService = answerService;
             _userService = userService;
+            _uow = uow;
         }
 
 
@@ -85,6 +88,7 @@ namespace Web.Areas.Admin.Controllers
             }
 
             _questionService.Create(input);
+            _uow.SaveChanges();
 
             return RedirectToAction(actionName: nameof(PollsController.Details), controllerName: "polls",
                 routeValues: new {id = input.PollId});

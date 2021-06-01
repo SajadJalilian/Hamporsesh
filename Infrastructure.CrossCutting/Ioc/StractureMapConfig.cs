@@ -18,15 +18,12 @@ namespace Infrastructure.CrossCutting.Ioc
         {
 
             services.AddSingleton<IConfiguration>(provider => { return configuration; });
+            services.AddDbContext<MainContext>(ServiceLifetime.Scoped);
 
             var container = new Container();
             container.Configure(config =>
             {
-              
-                // DbContext
-               // config.For<IMainContext>().Use<MongoDbContext>();
-               
-                // Services
+               // Services
                 config.For<IAnswerService>().Use<AnswerService>();
                 config.For<IChoiceService>().Use<ChoiceService>();
                 config.For<IPollService>().Use<PollService>();

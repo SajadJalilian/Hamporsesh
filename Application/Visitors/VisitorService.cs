@@ -1,6 +1,6 @@
-﻿using Hamporsesh.Domain.Entities;
+﻿using System.Linq;
+using Hamporsesh.Domain.Entities;
 using Hamporsesh.Infrastructure.Data.Context;
-using System.Linq;
 
 namespace Hamporsesh.Application.Visitors
 {
@@ -23,9 +23,7 @@ namespace Hamporsesh.Application.Visitors
                 return Create(ip, pollId);
 
             return visitor.Id;
-
         }
-
 
 
         public long Create(string ip, long pollId)
@@ -37,9 +35,8 @@ namespace Hamporsesh.Application.Visitors
                 IP = ip,
                 PollId = pollId
             });
-            _uow.SaveChanges();
-            return createdVisitor.Entity.Id;
 
+            return createdVisitor.Entity.Id;
         }
 
 
@@ -47,17 +44,8 @@ namespace Hamporsesh.Application.Visitors
         {
             var _visitors = _uow.Set<Visitor>();
             if (_visitors.Any(v => v.IP == visitorIp && v.PollId == pollId))
-            {
                 return true;
-            }
-            else
-            {
-                return false;
-            }
-
+            return false;
         }
-
-
-
     }
 }

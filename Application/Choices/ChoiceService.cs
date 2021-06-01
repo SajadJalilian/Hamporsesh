@@ -14,60 +14,53 @@ namespace Hamporsesh.Application.Choices
 {
     public class ChoiceService : IChoiceService
     {
+        private readonly IAnswerService _answerService;
+        private readonly DbSet<Choice> _choices;
+        private readonly IPollService _pollService;
         private readonly IUnitOfWork _uow;
         private readonly IUserService _userService;
-        private readonly IAnswerService _answerService;
-        private readonly IPollService _pollService;
-        private readonly DbSet<Choice> _choices;
 
 
         public ChoiceService(
-                IUnitOfWork uow,
-                IUserService userService,
-                IAnswerService answerService,
-                IPollService pollService
-            )
+            IUnitOfWork uow,
+            IUserService userService,
+            IAnswerService answerService,
+            IPollService pollService
+        )
         {
             _uow = uow;
             _userService = userService;
             _answerService = answerService;
             _pollService = pollService;
             _choices = uow.Set<Choice>();
-
         }
 
 
         /// <summary>
-        /// لیستی از جواب‌ها میگیرد ذخیره میکند
+        ///     لیستی از جواب‌ها میگیرد ذخیره میکند
         /// </summary>
         public void Create(ChoiceInputViewModel input)
         {
             var _choices = _uow.Set<Choice>();
 
             foreach (var question in input.Questions)
+            foreach (var answereId in question.AnsweresId)
             {
-                foreach (var answereId in question.AnsweresId)
+                var choice = new Choice
                 {
-                    var choice = new Choice
-                    {
-                        PollId = input.PollId,
-                        QuestionId = question.QuestionId,
-                        AnswereId = answereId,
-                        VisitorId = input.VisitorId,
-                        UserId = input.ParticipateUserId
-                    };
+                    PollId = input.PollId,
+                    QuestionId = question.QuestionId,
+                    AnswereId = answereId,
+                    VisitorId = input.VisitorId,
+                    UserId = input.ParticipateUserId
+                };
 
-                    _choices.Add(choice);
-                }
+                _choices.Add(choice);
             }
-
-            _uow.SaveChanges();
         }
 
 
-
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -82,10 +75,7 @@ namespace Hamporsesh.Application.Choices
             {
                 var poll = _pollService.GetById(choice.PollId);
 
-                if (pollIds.All(c => c != choice.PollId))
-                {
-                    polls.Add(poll);
-                }
+                if (pollIds.All(c => c != choice.PollId)) polls.Add(poll);
 
                 pollIds.Add(choice.PollId);
             }
@@ -103,7 +93,6 @@ namespace Hamporsesh.Application.Choices
 
 
         /// <summary>
-        /// 
         /// </summary>
         public IEnumerable<ChoiceOutputViewModel> GetUserPollChoices(long userId, long pollid)
         {
@@ -119,10 +108,7 @@ namespace Hamporsesh.Application.Choices
         }
 
 
-
-
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="pollId"></param>
         /// <returns></returns>
@@ -135,7 +121,6 @@ namespace Hamporsesh.Application.Choices
 
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -145,23 +130,15 @@ namespace Hamporsesh.Application.Choices
             var choices = _uow.Set<Choice>();
             long totalCount = 0;
 
-            foreach (var poll in userPolls)
-            {
-                totalCount += choices.Count(c => c.PollId == poll.Id);
-            }
+            foreach (var poll in userPolls) totalCount += choices.Count(c => c.PollId == poll.Id);
 
             return totalCount;
 
             // return userPolls.Aggregate<PollOutPutViewModel, long>(0, (totalCount, poll) => totalCount + choices.Count(c => c.PollId == poll.Id));
-
         }
 
 
-
-
-
         /// <summary>
-        /// 
         /// </summary>
         public ChoicesLas30DaysViewModel GetLast30DaysResponses()
         {
@@ -170,13 +147,13 @@ namespace Hamporsesh.Application.Choices
             var allChoices = choices.Where(c => c.CreateDateTime >= firstDay);
             var days = new List<DateTime>();
             var responseCount = new List<long>();
-            foreach (DateTime day in EachDay(firstDay, DateTime.Today))
+            foreach (var day in EachDay(firstDay, DateTime.Today))
             {
                 days.Add(day);
-                
+
                 responseCount.Add(
-                        allChoices.Count(c => c.CreateDateTime.Date == day.Date)
-                    );
+                    allChoices.Count(c => c.CreateDateTime.Date == day.Date)
+                );
             }
 
             return new ChoicesLas30DaysViewModel
@@ -187,9 +164,7 @@ namespace Hamporsesh.Application.Choices
         }
 
 
-
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="from"></param>
         /// <param name="thru"></param>
@@ -200,10 +175,7 @@ namespace Hamporsesh.Application.Choices
         }
 
 
-
-
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
