@@ -69,7 +69,7 @@ namespace Web.Areas.Admin.Controllers
                 return Json(new { result = false, message = errors });
             }
 
-            var model = new AnswerInputViewModel
+            var model = new AnswerInputDto
             {
                 QuestionId = questionId
             };
@@ -82,7 +82,7 @@ namespace Web.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
-        public IActionResult Create(AnswerInputViewModel input)
+        public IActionResult Create(AnswerInputDto input)
         {
             if (!ModelState.IsValid)
             {
@@ -142,7 +142,7 @@ namespace Web.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
-        public IActionResult Update(AnswerInputViewModel input)
+        public IActionResult Update(AnswerInputDto input)
         {
             if (!ModelState.IsValid)
             {

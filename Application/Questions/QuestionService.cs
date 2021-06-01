@@ -31,7 +31,7 @@ namespace Hamporsesh.Application.Questions
 
         /// <summary>
         /// </summary>
-        public void Create(QuestionInputViewModel input)
+        public void Create(QuestionInputDto input)
         {
             var questions = _uow.Set<Question>();
             var question = new Question
@@ -47,7 +47,7 @@ namespace Hamporsesh.Application.Questions
 
         /// <summary>
         /// </summary>
-        public void Update(QuestionInputViewModel input)
+        public void Update(QuestionInputDto input)
         {
             var questions = _uow.Set<Question>();
 
@@ -61,11 +61,11 @@ namespace Hamporsesh.Application.Questions
 
         /// <summary>
         /// </summary>
-        public QuestionOutputViewModel GetbyId(long id)
+        public QuestionOutputDto GetbyId(long id)
         {
             var question = _questions.FirstOrDefault(u => u.Id == id);
 
-            return new QuestionOutputViewModel
+            return new QuestionOutputDto
             {
                 Id = question.Id,
                 Title = question.Title,
@@ -77,12 +77,12 @@ namespace Hamporsesh.Application.Questions
 
         /// <summary>
         /// </summary>
-        public IEnumerable<QuestionOutputViewModel> GetListByPollId(long pollId)
+        public IEnumerable<QuestionOutputDto> GetListByPollId(long pollId)
         {
             var questions = _uow.Set<Question>();
 
             return questions.Where(q => q.PollId == pollId)
-                .Select(question => new QuestionOutputViewModel
+                .Select(question => new QuestionOutputDto
                 {
                     Id = question.Id,
                     Title = question.Title,
@@ -95,12 +95,12 @@ namespace Hamporsesh.Application.Questions
 
         /// <summary>
         /// </summary>
-        public QuestionInputViewModel GetToUpdate(long id)
+        public QuestionInputDto GetToUpdate(long id)
         {
             var questions = _uow.Set<Question>();
             var question = questions.FirstOrDefault(q => q.Id == id);
 
-            return new QuestionInputViewModel
+            return new QuestionInputDto
             {
                 Id = question.Id,
                 PollId = question.PollId,
@@ -112,12 +112,12 @@ namespace Hamporsesh.Application.Questions
 
         /// <summary>
         /// </summary>
-        public IEnumerable<QuestionOutputViewModel> GetAll()
+        public IEnumerable<QuestionOutputDto> GetAll()
         {
             var questions = _uow.Set<Question>();
 
             return questions.OrderByDescending(q => q.Id)
-                .Select(question => new QuestionOutputViewModel
+                .Select(question => new QuestionOutputDto
                 {
                     Id = question.Id,
                     PollId = question.PollId,

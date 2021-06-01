@@ -1,6 +1,7 @@
 using Hamporsesh.Infrastructure.Data.Context;
 using Infrastructure.CrossCutting.Identity;
 using Infrastructure.CrossCutting.Ioc;
+using Infrastructure.CrossCutting.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,7 @@ namespace Web
         {
             services.AddControllersWithViews();
             services.AddIdentityConfiguration(Configuration);
+            services.AddAutoMapperSetup();
 
             return services.ConfigureIocContainer(Configuration);
         }

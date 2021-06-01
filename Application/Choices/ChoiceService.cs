@@ -39,7 +39,7 @@ namespace Hamporsesh.Application.Choices
         /// <summary>
         ///     لیستی از جواب‌ها میگیرد ذخیره میکند
         /// </summary>
-        public void Create(ChoiceInputViewModel input)
+        public void Create(ChoiceInputDto input)
         {
             var _choices = _uow.Set<Choice>();
 
@@ -64,12 +64,12 @@ namespace Hamporsesh.Application.Choices
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IEnumerable<PollOutPutViewModel> GetPollsByParticipatedUserId(long id)
+        public IEnumerable<PollOutputDto> GetPollsByParticipatedUserId(long id)
         {
             var userChoices = _choices.Where(r => r.UserId == id);
             var user = _userService.GetById(id);
             var pollIds = new HashSet<long>();
-            var polls = new List<PollOutPutViewModel>();
+            var polls = new List<PollOutputDto>();
 
             foreach (var choice in userChoices)
             {
@@ -81,7 +81,7 @@ namespace Hamporsesh.Application.Choices
             }
 
             return polls.OrderByDescending(p => p.Id)
-                .Select(poll => new PollOutPutViewModel
+                .Select(poll => new PollOutputDto
                 {
                     Id = poll.Id,
                     Title = poll.Title,
@@ -94,12 +94,12 @@ namespace Hamporsesh.Application.Choices
 
         /// <summary>
         /// </summary>
-        public IEnumerable<ChoiceOutputViewModel> GetUserPollChoices(long userId, long pollid)
+        public IEnumerable<ChoiceOutputDto> GetUserPollChoices(long userId, long pollid)
         {
             var choices = _uow.Set<Choice>();
 
             return choices.Where(c => c.PollId == pollid && c.UserId == userId)
-                .Select(choices => new ChoiceOutputViewModel
+                .Select(choices => new ChoiceOutputDto
                 {
                     id = choices.Id,
                     UserId = choices.UserId,
@@ -140,7 +140,7 @@ namespace Hamporsesh.Application.Choices
 
         /// <summary>
         /// </summary>
-        public ChoicesLas30DaysViewModel GetLast30DaysResponses()
+        public ChoicesLas30DaysDto GetLast30DaysResponses()
         {
             var choices = _uow.Set<Choice>();
             var firstDay = DateTime.Today.AddDays(-30);
@@ -156,7 +156,7 @@ namespace Hamporsesh.Application.Choices
                 );
             }
 
-            return new ChoicesLas30DaysViewModel
+            return new ChoicesLas30DaysDto
             {
                 Days = days,
                 ResponseCounts = responseCount

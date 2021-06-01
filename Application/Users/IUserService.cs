@@ -9,27 +9,27 @@ namespace Hamporsesh.Application.Users
         /// <summary>
         /// 
         /// </summary>
-        void Create(UserInputViewModel input);
+        void Create(UserInputDto input);
 
         /// <summary>
         /// 
         /// </summary>
-        void Update(UserInputViewModel input);
+        void Update(UserInputDto input);
 
         /// <summary>
         /// 
         /// </summary>
-        UserOutputViewModel GetById(long id);
+        UserOutputDto GetById(long id);
 
         /// <summary>
         /// 
         /// </summary>
-        UserInputViewModel GetToUpdate(long id);
+        UserInputDto GetToUpdate(long id);
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<UserOutputViewModel> GetAll();
+        IEnumerable<UserOutputDto> GetAll();
 
         /// <summary>
         /// 
@@ -41,6 +41,6 @@ namespace Hamporsesh.Application.Users
         /// <summary>
         /// 
         /// </summary>
-        UserOutputViewModel GetByUserName(string currentUserName);
+        UserOutputDto GetByUserName(string currentUserName);
     }
 }

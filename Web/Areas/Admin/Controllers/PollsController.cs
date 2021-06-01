@@ -74,7 +74,7 @@ namespace Web.Areas.Admin.Controllers
                 p.TotalResponses = _choiceService.GetPollTotalResponses(p.Id);
             }
 
-            var model = new PollIndexViewModelAdmin
+            var model = new PollIndexDto
             {
                 Polls = polls,
                 User = user
@@ -97,7 +97,7 @@ namespace Web.Areas.Admin.Controllers
                 return Json(new {result = false, message = errors});
             }
 
-            var model = new PollInputViewModelAdmin
+            var model = new PollInputDto
             {
                 UserId = userId,
             };
@@ -111,7 +111,7 @@ namespace Web.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
-        public IActionResult Create(PollInputViewModelAdmin input)
+        public IActionResult Create(PollInputDto input)
         {
             if (!ModelState.IsValid)
             {
@@ -149,7 +149,7 @@ namespace Web.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
-        public IActionResult Update(PollInputViewModelAdmin input)
+        public IActionResult Update(PollInputDto input)
         {
             if (!ModelState.IsValid)
             {
@@ -180,10 +180,10 @@ namespace Web.Areas.Admin.Controllers
             var questions = _questionService.GetListByPollId(id);
             var poll = _pollService.GetByIdAdmin(id);
             poll.TotalResponses = _choiceService.GetPollTotalResponses(poll.Id);
-            var model = new PollDetailsViewModelAdmin
+            var model = new PollDetailsViewDto
             {
                 Poll = poll,
-                Questions = questions.Select(question => new QuestionDetailViewModel
+                Questions = questions.Select(question => new QuestionDetailDto
                 {
                     Question = question,
                     Answers = _answerService.GetListByQuestionId(question.Id)
@@ -234,16 +234,16 @@ namespace Web.Areas.Admin.Controllers
         {
             var poll = _pollService.GetById(id);
             var pollQuestions = _questionService.GetListByPollId(id);
-            var questions = new List<QuestionResultOutput>();
+            var questions = new List<QuestionResultOutputDto>();
 
             foreach (var question in pollQuestions)
             {
                 var questionAnswers = _answerService.GetListByQuestionId(question.Id);
-                var answerResults = new List<AnswerResultsViewModel>();
+                var answerResults = new List<AnswerResultsDto>();
                 foreach (var ansResult in questionAnswers)
                 {
                     answerResults.Add(
-                        new AnswerResultsViewModel()
+                        new AnswerResultsDto()
                         {
                             AnswerName = ansResult.Title,
                             TotalResponses = _choiceService.GetAnswerTotalResponses(ansResult.Id)
@@ -251,7 +251,7 @@ namespace Web.Areas.Admin.Controllers
                     );
                 }
 
-                questions.Add(new QuestionResultOutput()
+                questions.Add(new QuestionResultOutputDto()
                 {
                     QuestionName = question.Title,
                     AnswersResults = answerResults
@@ -259,7 +259,7 @@ namespace Web.Areas.Admin.Controllers
             }
 
 
-            var model = new PollResultsViewModel
+            var model = new PollResultsDto
             {
                 PollTitle = poll.Title,
                 TotalResponses = _choiceService.GetPollTotalResponses(id),

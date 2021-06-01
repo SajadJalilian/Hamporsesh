@@ -41,7 +41,7 @@ namespace Web.Controllers
         /// </summary>
         [HttpPost("/login")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginDto model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
 
@@ -96,7 +96,7 @@ namespace Web.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel input)
+        public async Task<IActionResult> Register(RegisterDto input)
         {
             if (!ModelState.IsValid)
                 return View(input);
@@ -137,7 +137,7 @@ namespace Web.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
         {
             if (ModelState.IsValid)
             {

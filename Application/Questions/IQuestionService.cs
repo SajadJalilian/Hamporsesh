@@ -8,32 +8,32 @@ namespace Hamporsesh.Application.Questions
         /// <summary>
         /// 
         /// </summary>
-        void Create(QuestionInputViewModel input);
+        void Create(QuestionInputDto input);
 
         /// <summary>
         /// 
         /// </summary>
-        void Update(QuestionInputViewModel input);
+        void Update(QuestionInputDto input);
 
         /// <summary>
         /// 
         /// </summary>
-        QuestionOutputViewModel GetbyId(long id);
+        QuestionOutputDto GetbyId(long id);
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<QuestionOutputViewModel> GetListByPollId(long pollId);
+        IEnumerable<QuestionOutputDto> GetListByPollId(long pollId);
 
         /// <summary>
         /// 
         /// </summary>
-        QuestionInputViewModel GetToUpdate(long id);
+        QuestionInputDto GetToUpdate(long id);
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<QuestionOutputViewModel> GetAll();
+        IEnumerable<QuestionOutputDto> GetAll();
 
         /// <summary>
         /// 

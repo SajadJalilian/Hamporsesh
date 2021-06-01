@@ -23,7 +23,7 @@ namespace Infrastructure.CrossCutting.Ioc
             var container = new Container();
             container.Configure(config =>
             {
-               // Services
+                // Services
                 config.For<IAnswerService>().Use<AnswerService>();
                 config.For<IChoiceService>().Use<ChoiceService>();
                 config.For<IPollService>().Use<PollService>();
@@ -31,7 +31,7 @@ namespace Infrastructure.CrossCutting.Ioc
                 config.For<IUserService>().Use<UserService>();
                 config.For<IVisitorService>().Use<VisitorService>();
                 config.For<IUnitOfWork>().Use<MainContext>();
-                
+
             });
 
 

@@ -8,12 +8,12 @@ namespace Hamporsesh.Application.Answers
         /// <summary>
         /// 
         /// </summary>
-        void Create(AnswerInputViewModel input);
+        void Create(AnswerInputDto input);
 
         /// <summary>
         /// 
         /// </summary>
-        void Update(AnswerInputViewModel input);
+        void Update(AnswerInputDto input);
 
         /// <summary>
         /// 
@@ -28,7 +28,7 @@ namespace Hamporsesh.Application.Answers
         /// <summary>
         /// 
         /// </summary>
-        AnswerInputViewModel GetToUpdate(long id);
+        AnswerInputDto GetToUpdate(long id);
 
         /// <summary>
         /// 

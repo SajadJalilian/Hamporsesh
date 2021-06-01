@@ -59,10 +59,10 @@ namespace Web.Areas.Participation.Controllers
             var poll = _pollService.GetByIdAdmin(id);
             var questions = _questionService.GetListByPollId(id);
 
-            var model = new PollDetailsViewModelAdmin()
+            var model = new PollDetailsViewDto()
             {
                 Poll = poll,
-                Questions = questions.Select(question => new QuestionDetailViewModel
+                Questions = questions.Select(question => new QuestionDetailDto
                 {
                     Question = question,
                     Answers = _answerService.GetListByQuestionId(question.Id)
@@ -117,7 +117,7 @@ namespace Web.Areas.Participation.Controllers
             }
 
 
-            var model = new ChoiceInputViewModel
+            var model = new ChoiceInputDto
             {
                 PollId = input.PollId,
                 VisitorId = _visitorService.GetOrSetIdByIp(Request.Host.ToString(), input.PollId),

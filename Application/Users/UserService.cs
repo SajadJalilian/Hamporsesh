@@ -22,7 +22,7 @@ namespace Hamporsesh.Application.Users
 
         /// <summary>
         /// </summary>
-        public void Create(UserInputViewModel input)
+        public void Create(UserInputDto input)
         {
             var user = new User
             {
@@ -34,7 +34,7 @@ namespace Hamporsesh.Application.Users
 
         /// <summary>
         /// </summary>
-        public void Update(UserInputViewModel input)
+        public void Update(UserInputDto input)
         {
             var user = _users.FirstOrDefault(u => u.Id == input.Id);
 
@@ -45,11 +45,11 @@ namespace Hamporsesh.Application.Users
 
         /// <summary>
         /// </summary>
-        public UserOutputViewModel GetById(long id)
+        public UserOutputDto GetById(long id)
         {
             var user = _users.FirstOrDefault(u => u.Id == id);
 
-            return new UserOutputViewModel
+            return new UserOutputDto
             {
                 Id = user.Id,
                 DisplayName = user.DisplayName,
@@ -60,10 +60,10 @@ namespace Hamporsesh.Application.Users
 
         /// <summary>
         /// </summary>
-        public UserInputViewModel GetToUpdate(long id)
+        public UserInputDto GetToUpdate(long id)
         {
             var user = _users.FirstOrDefault(u => u.Id == id);
-            return new UserInputViewModel
+            return new UserInputDto
             {
                 Id = user.Id,
                 DisplayName = user.DisplayName
@@ -73,10 +73,10 @@ namespace Hamporsesh.Application.Users
 
         /// <summary>
         /// </summary>
-        public UserOutputViewModel GetByUserName(string currentUserName)
+        public UserOutputDto GetByUserName(string currentUserName)
         {
             var user = _users.FirstOrDefault(u => u.UserName == currentUserName);
-            return new UserOutputViewModel
+            return new UserOutputDto
             {
                 Id = user.Id,
                 DisplayName = user.DisplayName
@@ -86,10 +86,10 @@ namespace Hamporsesh.Application.Users
 
         /// <summary>
         /// </summary>
-        public IEnumerable<UserOutputViewModel> GetAll()
+        public IEnumerable<UserOutputDto> GetAll()
         {
             return _users.OrderByDescending(u => u.Id)
-                .Select(user => new UserOutputViewModel
+                .Select(user => new UserOutputDto
                 {
                     Id = user.Id,
                     DisplayName = user.DisplayName,

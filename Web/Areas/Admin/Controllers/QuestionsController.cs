@@ -67,7 +67,7 @@ namespace Web.Areas.Admin.Controllers
                 return Json(new {result = false, message = errors});
             }
 
-            var model = new QuestionInputViewModel
+            var model = new QuestionInputDto
             {
                 PollId = pollId,
             };
@@ -79,7 +79,7 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        public IActionResult Create(QuestionInputViewModel input)
+        public IActionResult Create(QuestionInputDto input)
         {
             if (!ModelState.IsValid)
             {
@@ -107,7 +107,7 @@ namespace Web.Areas.Admin.Controllers
                 return Json(new {result = false, message = errors});
             }
 
-            var model = new QuestionDetailViewModel
+            var model = new QuestionDetailDto
             {
                 Question = _questionService.GetbyId(id),
                 Answers = _answerService.GetListByQuestionId(id)
@@ -138,7 +138,7 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        public IActionResult Update(QuestionInputViewModel input)
+        public IActionResult Update(QuestionInputDto input)
         {
             if (!ModelState.IsValid)
             {

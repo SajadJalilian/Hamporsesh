@@ -33,7 +33,7 @@ namespace Hamporsesh.Application.Answers
 
         /// <summary>
         /// </summary>
-        public void Create(AnswerInputViewModel input)
+        public void Create(AnswerInputDto input)
         {
             var answer = new Answer
             {
@@ -46,7 +46,7 @@ namespace Hamporsesh.Application.Answers
 
         /// <summary>
         /// </summary>
-        public void Update(AnswerInputViewModel input)
+        public void Update(AnswerInputDto input)
         {
             var answer = _answers.FirstOrDefault(
                 a => a.Id == input.Id);
@@ -89,11 +89,11 @@ namespace Hamporsesh.Application.Answers
 
         /// <summary>
         /// </summary>
-        public AnswerInputViewModel GetToUpdate(long id)
+        public AnswerInputDto GetToUpdate(long id)
         {
             var answer = _answers.FirstOrDefault(a => a.Id == id);
 
-            return new AnswerInputViewModel
+            return new AnswerInputDto
             {
                 Id = answer.Id,
                 QuestionId = answer.QuestionId,
@@ -132,7 +132,7 @@ namespace Hamporsesh.Application.Answers
             var pollQuestions = _questionService.GetListByPollId(pollId);
             List<AnswerOutputViewModel> pollAnswers = new();
             foreach (var question in pollQuestions)
-                pollAnswers.Add((AnswerOutputViewModel) _answers.Where(a => a.QuestionId == question.Id)
+                pollAnswers.Add((AnswerOutputViewModel)_answers.Where(a => a.QuestionId == question.Id)
                     .Select(answer => new AnswerOutputViewModel
                     {
                         Id = answer.Id,
@@ -151,7 +151,7 @@ namespace Hamporsesh.Application.Answers
         public long GetUserTotalAnswers(long userId)
         {
             var userPolls = _pollService.GetListByUserId(userId);
-            var userQuestions = new List<QuestionOutputViewModel>();
+            var userQuestions = new List<QuestionOutputDto>();
             var totalCount = 0;
 
             foreach (var poll in userPolls)

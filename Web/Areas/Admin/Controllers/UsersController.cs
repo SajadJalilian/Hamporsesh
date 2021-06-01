@@ -72,7 +72,7 @@ namespace Web.Areas.Admin.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
-        public IActionResult Update(UserInputViewModel input)
+        public IActionResult Update(UserInputDto input)
         {
             if (!ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace Web.Areas.Admin.Controllers
 
             #endregion
             var user = _userService.GetById(id);
-            ProfileOutputViewModel model = new()
+            ProfileOutputDto model = new()
             {
                 User = user,
                 Polls = _pollService.GetListByUserIdAdmin(id),

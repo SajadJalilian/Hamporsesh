@@ -21,7 +21,7 @@ namespace Hamporsesh.Application.Polls
 
         /// <summary>
         /// </summary>
-        public void Create(PollInputViewModelAdmin input)
+        public void Create(PollInputDto input)
         {
             var poll = new Poll
             {
@@ -36,7 +36,7 @@ namespace Hamporsesh.Application.Polls
 
         /// <summary>
         /// </summary>
-        public void Update(PollInputViewModelAdmin input)
+        public void Update(PollInputDto input)
         {
             var poll = _polls.FirstOrDefault(u => u.Id == input.Id);
 
@@ -50,11 +50,11 @@ namespace Hamporsesh.Application.Polls
 
         /// <summary>
         /// </summary>
-        public PollOutPutViewModel GetById(long id)
+        public PollOutputDto GetById(long id)
         {
             var poll = _polls.FirstOrDefault(u => u.Id == id);
 
-            return new PollOutPutViewModel
+            return new PollOutputDto
             {
                 Id = poll.Id,
                 Title = poll.Title,
@@ -77,10 +77,10 @@ namespace Hamporsesh.Application.Polls
 
         /// <summary>
         /// </summary>
-        public IEnumerable<PollOutPutViewModel> GetListByUserId(long userId)
+        public IEnumerable<PollOutputDto> GetListByUserId(long userId)
         {
             return _polls.Where(p => p.UserId == userId).OrderByDescending(u => u.Id)
-                .Select(poll => new PollOutPutViewModel
+                .Select(poll => new PollOutputDto
                 {
                     Id = poll.Id,
                     Title = poll.Title,
@@ -92,11 +92,11 @@ namespace Hamporsesh.Application.Polls
 
         /// <summary>
         /// </summary>
-        public PollInputViewModelAdmin GetToUpdate(long id)
+        public PollInputDto GetToUpdate(long id)
         {
             var poll = _polls.FirstOrDefault(u => u.Id == id);
 
-            return new PollInputViewModelAdmin
+            return new PollInputDto
             {
                 Id = poll.Id,
                 Title = poll.Title,
@@ -108,10 +108,10 @@ namespace Hamporsesh.Application.Polls
 
         /// <summary>
         /// </summary>
-        public IEnumerable<PollOutPutViewModel> GetAll()
+        public IEnumerable<PollOutputDto> GetAll()
         {
             return _polls.OrderByDescending(u => u.Id)
-                .Select(poll => new PollOutPutViewModel
+                .Select(poll => new PollOutputDto
                 {
                     Id = poll.Id,
                     Title = poll.Title,

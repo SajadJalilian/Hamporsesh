@@ -51,7 +51,7 @@ namespace Web.Areas.Admin.Controllers
             var responses = chart.ResponseCounts.Select(r => long.Parse(r.ToString()));
 
 
-            var model = new DashboardViewModel
+            var model = new DashboardDto
             {
                 Polls = polls,
                 Days = days,

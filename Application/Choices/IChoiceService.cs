@@ -10,19 +10,19 @@ namespace Hamporsesh.Application.Choices
         /// <summary>
         /// لیستی از جواب‌ها میگیرد ذخیره میکند
         /// </summary>
-        void Create(ChoiceInputViewModel input);
+        void Create(ChoiceInputDto input);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        IEnumerable<PollOutPutViewModel> GetPollsByParticipatedUserId(long id);
+        IEnumerable<PollOutputDto> GetPollsByParticipatedUserId(long id);
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<ChoiceOutputViewModel> GetUserPollChoices(long userId, long pollid);
+        IEnumerable<ChoiceOutputDto> GetUserPollChoices(long userId, long pollid);
 
         /// <summary>
         /// 
@@ -41,7 +41,7 @@ namespace Hamporsesh.Application.Choices
         /// <summary>
         /// 
         /// </summary>
-        ChoicesLas30DaysViewModel GetLast30DaysResponses();
+        ChoicesLas30DaysDto GetLast30DaysResponses();
 
         /// <summary>
         /// 

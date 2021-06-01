@@ -8,17 +8,17 @@ namespace Hamporsesh.Application.Polls
         /// <summary>
         /// 
         /// </summary>
-        void Create(PollInputViewModelAdmin input);
+        void Create(PollInputDto input);
 
         /// <summary>
         /// 
         /// </summary>
-        void Update(PollInputViewModelAdmin input);
+        void Update(PollInputDto input);
 
         /// <summary>
         /// 
         /// </summary>
-        PollOutPutViewModel GetById(long id);
+        PollOutputDto GetById(long id);
 
         /// <summary>
         /// 
@@ -30,17 +30,17 @@ namespace Hamporsesh.Application.Polls
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<PollOutPutViewModel> GetListByUserId(long userId);
+        IEnumerable<PollOutputDto> GetListByUserId(long userId);
 
         /// <summary>
         /// 
         /// </summary>
-        PollInputViewModelAdmin GetToUpdate(long id);
+        PollInputDto GetToUpdate(long id);
 
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<PollOutPutViewModel> GetAll();
+        IEnumerable<PollOutputDto> GetAll();
 
         /// <summary>
         /// 
