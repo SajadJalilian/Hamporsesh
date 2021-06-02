@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AutoMapper;
 using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Core.ViewModels.Choices;
 using Hamporsesh.Application.Core.ViewModels.Polls;
@@ -9,6 +7,9 @@ using Hamporsesh.Application.Users;
 using Hamporsesh.Domain.Entities;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hamporsesh.Application.Choices
 {
@@ -17,6 +18,7 @@ namespace Hamporsesh.Application.Choices
         private readonly IAnswerService _answerService;
         private readonly DbSet<Choice> _choices;
         private readonly IPollService _pollService;
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _uow;
         private readonly IUserService _userService;
 
@@ -25,13 +27,15 @@ namespace Hamporsesh.Application.Choices
             IUnitOfWork uow,
             IUserService userService,
             IAnswerService answerService,
-            IPollService pollService
+            IPollService pollService,
+            IMapper mapper
         )
         {
             _uow = uow;
             _userService = userService;
             _answerService = answerService;
             _pollService = pollService;
+            _mapper = mapper;
             _choices = uow.Set<Choice>();
         }
 
@@ -41,22 +45,21 @@ namespace Hamporsesh.Application.Choices
         /// </summary>
         public void Create(ChoiceInputDto input)
         {
-            var _choices = _uow.Set<Choice>();
 
             foreach (var question in input.Questions)
-            foreach (var answereId in question.AnsweresId)
-            {
-                var choice = new Choice
+                foreach (var answereId in question.AnsweresId)
                 {
-                    PollId = input.PollId,
-                    QuestionId = question.QuestionId,
-                    AnswereId = answereId,
-                    VisitorId = input.VisitorId,
-                    UserId = input.ParticipateUserId
-                };
+                    var choice = new Choice
+                    {
+                        PollId = input.PollId,
+                        QuestionId = question.QuestionId,
+                        AnswereId = answereId,
+                        VisitorId = input.VisitorId,
+                        UserId = input.ParticipateUserId
+                    };
 
-                _choices.Add(choice);
-            }
+                    _choices.Add(choice);
+                }
         }
 
 
@@ -81,14 +84,7 @@ namespace Hamporsesh.Application.Choices
             }
 
             return polls.OrderByDescending(p => p.Id)
-                .Select(poll => new PollOutputDto
-                {
-                    Id = poll.Id,
-                    Title = poll.Title,
-                    UserId = poll.UserId,
-                    Description = poll.Description,
-                    CreateDateTimeStr = poll.CreateDateTimeStr
-                });
+                .Select(poll => _mapper.Map<PollOutputDto>(poll));
         }
 
 
@@ -99,12 +95,16 @@ namespace Hamporsesh.Application.Choices
             var choices = _uow.Set<Choice>();
 
             return choices.Where(c => c.PollId == pollid && c.UserId == userId)
-                .Select(choices => new ChoiceOutputDto
+                .Select(choices =>
+
+                new ChoiceOutputDto
                 {
                     id = choices.Id,
                     UserId = choices.UserId,
                     Answer = _answerService.GetById(choices.AnswereId)
-                }).ToList();
+                }
+
+                ).ToList();
         }
 
 
@@ -114,9 +114,7 @@ namespace Hamporsesh.Application.Choices
         /// <returns></returns>
         public long GetPollTotalResponses(long pollId)
         {
-            var choices = _uow.Set<Choice>();
-
-            return choices.Count(c => c.PollId == pollId);
+              return _choices.Count(c => c.PollId == pollId);
         }
 
 
@@ -127,14 +125,10 @@ namespace Hamporsesh.Application.Choices
         public long GetAllPollsTotalResponses(long userId)
         {
             var userPolls = _pollService.GetListByUserId(userId);
-            var choices = _uow.Set<Choice>();
             long totalCount = 0;
-
-            foreach (var poll in userPolls) totalCount += choices.Count(c => c.PollId == poll.Id);
+            foreach (var poll in userPolls) totalCount += _choices.Count(c => c.PollId == poll.Id);
 
             return totalCount;
-
-            // return userPolls.Aggregate<PollOutPutViewModel, long>(0, (totalCount, poll) => totalCount + choices.Count(c => c.PollId == poll.Id));
         }
 
 
@@ -142,9 +136,8 @@ namespace Hamporsesh.Application.Choices
         /// </summary>
         public ChoicesLas30DaysDto GetLast30DaysResponses()
         {
-            var choices = _uow.Set<Choice>();
             var firstDay = DateTime.Today.AddDays(-30);
-            var allChoices = choices.Where(c => c.CreateDateTime >= firstDay);
+            var allChoices = _choices.Where(c => c.CreateDateTime >= firstDay);
             var days = new List<DateTime>();
             var responseCount = new List<long>();
             foreach (var day in EachDay(firstDay, DateTime.Today))
@@ -181,8 +174,7 @@ namespace Hamporsesh.Application.Choices
         /// <returns></returns>
         public long GetAnswerTotalResponses(long id)
         {
-            var choices = _uow.Set<Choice>();
-            return choices.Count(c => c.AnswereId == id);
+            return _choices.Count(c => c.AnswereId == id);
         }
     }
 }

@@ -17,7 +17,7 @@ using Web.Extensions;
 
 namespace Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("")]
     [Authorize]
     public class PollsController : BaseController
     {
@@ -62,12 +62,9 @@ namespace Web.Areas.Admin.Controllers
                 return Json(new {result = false, message = errors});
             }
 
-            var polls = _pollService.GetAllAdmin();
+            var polls = _pollService.GetAll();
             var userId = GetCurrentUserId();
             var user = _userService.GetById(userId);
-
-
-            //TODO refactor foreach to this Collection.All(c => { c.needsChange = value; return true; });
 
             foreach (var p in polls)
             {
@@ -178,7 +175,7 @@ namespace Web.Areas.Admin.Controllers
             }
 
             var questions = _questionService.GetListByPollId(id);
-            var poll = _pollService.GetByIdAdmin(id);
+            var poll = _pollService.GetById(id);
             poll.TotalResponses = _choiceService.GetPollTotalResponses(poll.Id);
             var model = new PollDetailsViewDto
             {

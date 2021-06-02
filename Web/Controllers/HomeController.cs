@@ -30,9 +30,9 @@ namespace Web.Controllers
 
             return View(polls);
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -40,10 +40,10 @@ namespace Web.Controllers
         public IActionResult About()
         {
             return View();
-        }  
-        
-        
-        
+        }
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -51,8 +51,8 @@ namespace Web.Controllers
         public IActionResult Contact()
         {
             return View();
-        }    
-        
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -61,9 +61,6 @@ namespace Web.Controllers
         {
             return View();
         }
-        
-        
 
     }
-
 }

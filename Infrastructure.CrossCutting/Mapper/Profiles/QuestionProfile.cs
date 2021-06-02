@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Hamporsesh.Application.Core.ViewModels.Questions;
+using Hamporsesh.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,8 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
     {
         public QuestionProfile()
         {
-
+            CreateMap<QuestionInputDto, Question>();
+            CreateMap<Question, QuestionInputDto>();
         }
     }
 }

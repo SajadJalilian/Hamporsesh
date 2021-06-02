@@ -46,20 +46,5 @@ namespace Hamporsesh.Application.Polls
         /// 
         /// </summary>
         void Delete(long id);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        IEnumerable<PollOutputViewModelAdmin> GetAllAdmin();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        PollOutputViewModelAdmin GetByIdAdmin(long id);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        IEnumerable<PollOutputViewModelAdmin> GetListByUserIdAdmin(long userId);
     }
 }

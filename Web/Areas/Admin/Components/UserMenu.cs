@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.Admin.Components
 {
-    public class UserMenu :ViewComponent
+    public class UserMenu : ViewComponent
     {
         private readonly IUserService _userService;
         public UserMenu(IUserService userService)
@@ -19,7 +19,7 @@ namespace Web.Areas.Admin.Components
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var currentUserName = this.User.Identity.Name;
-            var user =  _userService.GetByUserName(currentUserName);
+            var user = _userService.GetByUserName(currentUserName);
 
             return View(user);
         }

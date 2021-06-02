@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Hamporsesh.Application.Core.ViewModels.Polls;
+using Hamporsesh.Domain.Entities;
 
 namespace Infrastructure.CrossCutting.Mapper.Profiles
 {
@@ -11,7 +8,10 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
     {
         public PollProfile()
         {
-
+            CreateMap<Poll, PollInputDto>();
+            CreateMap<PollInputDto, Poll>();
+            CreateMap<Poll, PollOutputDto>();
+            CreateMap<PollOutputDto, Poll>();
         }
     }
 }

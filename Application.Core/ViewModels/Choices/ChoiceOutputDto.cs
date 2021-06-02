@@ -7,7 +7,7 @@ namespace Hamporsesh.Application.Core.ViewModels.Choices
     {
         public long id { get; set; }
         [Required]
-        public AnswerOutputViewModel Answer { get; set; }
+        public AnswerOutputDto Answer { get; set; }
         public long UserId { get; set; }
     }
 }

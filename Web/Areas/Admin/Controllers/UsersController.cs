@@ -107,7 +107,7 @@ namespace Web.Areas.Admin.Controllers
             ProfileOutputDto model = new()
             {
                 User = user,
-                Polls = _pollService.GetListByUserIdAdmin(id),
+                Polls = _pollService.GetListByUserId(id),
                 ParticipatedPolls = _choiceService.GetPollsByParticipatedUserId(id)
             };
             return View(model);

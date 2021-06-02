@@ -8,7 +8,7 @@ namespace Hamporsesh.Application.Core.ViewModels.Users
     {
         public UserOutputDto User { get; set; }
 
-        public IEnumerable<PollOutputViewModelAdmin> Polls { get; set; }
+        public IEnumerable<PollOutputDto> Polls { get; set; }
         public IEnumerable<PollOutputDto> ParticipatedPolls { get; set; }
     }
 }

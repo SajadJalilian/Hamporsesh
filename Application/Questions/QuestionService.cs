@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Users;
@@ -12,6 +13,7 @@ namespace Hamporsesh.Application.Questions
     public class QuestionService : IQuestionService
     {
         private readonly IPollService _pollService;
+        private readonly IMapper _mapper;
         private readonly DbSet<Question> _questions;
         private readonly IUnitOfWork _uow;
         private readonly IUserService _userService;
@@ -19,12 +21,14 @@ namespace Hamporsesh.Application.Questions
         public QuestionService(
             IUserService userService,
             IUnitOfWork uow,
-            IPollService pollService
+            IPollService pollService,
+            IMapper mapper
         )
         {
             _userService = userService;
             _uow = uow;
             _pollService = pollService;
+            _mapper = mapper;
             _questions = uow.Set<Question>();
         }
 
@@ -33,15 +37,8 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public void Create(QuestionInputDto input)
         {
-            var questions = _uow.Set<Question>();
-            var question = new Question
-            {
-                Title = input.Title,
-                Type = input.Type,
-                PollId = input.PollId
-            };
-
-            questions.Add(question);
+            var question = _mapper.Map<Question>(input);
+            _questions.Add(question);
         }
 
 
@@ -49,14 +46,13 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public void Update(QuestionInputDto input)
         {
-            var questions = _uow.Set<Question>();
 
-            var question = questions.FirstOrDefault(u => u.Id == input.Id);
+            var question = _questions.FirstOrDefault(u => u.Id == input.Id);
 
             question.Title = input.Title;
             question.Type = input.Type;
 
-            questions.Update(question);
+            _questions.Update(question);
         }
 
         /// <summary>
@@ -65,13 +61,7 @@ namespace Hamporsesh.Application.Questions
         {
             var question = _questions.FirstOrDefault(u => u.Id == id);
 
-            return new QuestionOutputDto
-            {
-                Id = question.Id,
-                Title = question.Title,
-                Type = question.Type,
-                PollId = question.PollId
-            };
+            return _mapper.Map<QuestionOutputDto>(question);
         }
 
 
@@ -79,17 +69,8 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public IEnumerable<QuestionOutputDto> GetListByPollId(long pollId)
         {
-            var questions = _uow.Set<Question>();
-
-            return questions.Where(q => q.PollId == pollId)
-                .Select(question => new QuestionOutputDto
-                {
-                    Id = question.Id,
-                    Title = question.Title,
-                    Type = question.Type,
-                    PollId = question.PollId,
-                    CreateDateTime = question.CreateDateTime
-                }).ToList();
+            return _questions.Where(q => q.PollId == pollId)
+                .Select(question => _mapper.Map<QuestionOutputDto>(question)).ToList();
         }
 
 
@@ -97,16 +78,8 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public QuestionInputDto GetToUpdate(long id)
         {
-            var questions = _uow.Set<Question>();
-            var question = questions.FirstOrDefault(q => q.Id == id);
-
-            return new QuestionInputDto
-            {
-                Id = question.Id,
-                PollId = question.PollId,
-                Title = question.Title,
-                Type = question.Type
-            };
+            var question = _questions.FirstOrDefault(q => q.Id == id);
+            return _mapper.Map<QuestionInputDto>(question);
         }
 
 
@@ -114,16 +87,8 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public IEnumerable<QuestionOutputDto> GetAll()
         {
-            var questions = _uow.Set<Question>();
-
-            return questions.OrderByDescending(q => q.Id)
-                .Select(question => new QuestionOutputDto
-                {
-                    Id = question.Id,
-                    PollId = question.PollId,
-                    Title = question.Title,
-                    Type = question.Type
-                }).ToList();
+            return _questions.OrderByDescending(q => q.Id)
+                .Select(question => _mapper.Map<QuestionOutputDto>(question)).ToList();
         }
 
 
@@ -142,12 +107,11 @@ namespace Hamporsesh.Application.Questions
         /// <returns></returns>
         public long GetUserTotalQuestions(long userId)
         {
-            var questions = _uow.Set<Question>();
             var user = _userService.GetById(userId);
             var userPolls = _pollService.GetListByUserId(userId);
             long totalCount = 0;
 
-            foreach (var poll in userPolls) totalCount += questions.Count(q => q.PollId == poll.Id);
+            foreach (var poll in userPolls) totalCount += _questions.Count(q => q.PollId == poll.Id);
 
             return totalCount;
         }

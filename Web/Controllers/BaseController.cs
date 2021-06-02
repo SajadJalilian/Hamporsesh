@@ -2,17 +2,12 @@
 
 namespace Web.Controllers
 {
-
     public class BaseController : Controller
     {
-
         public BaseController()
         {
 
         }
-
-        
-
     }
 }
 

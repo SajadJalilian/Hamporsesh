@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using Hamporsesh.Application.Answers;
+﻿using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Choices;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Hamporsesh.Application.Core.ViewModels.Dashboard;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Application.Users;
-using Hamporsesh.Application.Visitors;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -45,7 +44,7 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var user = _userService.GetById(GetCurrentUserId());
-            var polls = _pollService.GetAllAdmin();
+            var polls = _pollService.GetAll();
             var chart = _choiceService.GetLast30DaysResponses();
             var days = chart.Days.Select(d => d.ToPersianDateTimeString());
             var responses = chart.ResponseCounts.Select(r => long.Parse(r.ToString()));
