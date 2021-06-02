@@ -7,5 +7,6 @@
         public string Description { get; set; }
         public long UserId { get; set; }
         public string CreateDateTimeStr { get; set; }
+        public long TotalResponses { get; set; }
     }
 }

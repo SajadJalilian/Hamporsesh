@@ -6,6 +6,6 @@ namespace Hamporsesh.Application.Core.ViewModels.Polls
     public class PollIndexDto
     {
         public UserOutputDto User { get; set; }
-        public IEnumerable<PollOutputViewModelAdmin> Polls { get; set; }
+        public IEnumerable<PollOutputDto> Polls { get; set; }
     }
 }

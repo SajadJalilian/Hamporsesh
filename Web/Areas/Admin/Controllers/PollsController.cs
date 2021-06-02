@@ -17,7 +17,7 @@ using Web.Extensions;
 
 namespace Web.Areas.Admin.Controllers
 {
-    [Area("")]
+    [Area("Admin")]
     [Authorize]
     public class PollsController : BaseController
     {
@@ -177,7 +177,7 @@ namespace Web.Areas.Admin.Controllers
             var questions = _questionService.GetListByPollId(id);
             var poll = _pollService.GetById(id);
             poll.TotalResponses = _choiceService.GetPollTotalResponses(poll.Id);
-            var model = new PollDetailsViewDto
+            var model = new PollDetailsDto
             {
                 Poll = poll,
                 Questions = questions.Select(question => new QuestionDetailDto
