@@ -1,17 +1,13 @@
 ﻿using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Choices;
-using Hamporsesh.Application.Core.ViewModels.Answers;
 using Hamporsesh.Application.Core.ViewModels.Polls;
-using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Application.Users;
-using Hamporsesh.Application.Visitors;
+using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using Hamporsesh.Infrastructure.Data.Context;
+using System;
 using Web.Extensions;
 
 
@@ -26,7 +22,6 @@ namespace Web.Areas.Admin.Controllers
         private readonly IAnswerService _answerService;
         private readonly IUserService _userService;
         private readonly IChoiceService _choiceService;
-        private readonly IVisitorService _visitorService;
         private readonly IUnitOfWork _uow;
 
 
@@ -36,7 +31,6 @@ namespace Web.Areas.Admin.Controllers
             IAnswerService answerService,
             IUserService userService,
             IChoiceService choiceService,
-            IVisitorService visitorService,
             IUnitOfWork uow
         )
         {
@@ -45,7 +39,6 @@ namespace Web.Areas.Admin.Controllers
             _answerService = answerService;
             _userService = userService;
             _choiceService = choiceService;
-            _visitorService = visitorService;
             _uow = uow;
         }
 
@@ -56,28 +49,8 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
-            }
-
-            var polls = _pollService.GetAll();
-            var userId = GetCurrentUserId();
-            var user = _userService.GetById(userId);
-
-            foreach (var p in polls)
-            {
-                p.TotalResponses = _choiceService.GetPollTotalResponses(p.Id);
-            }
-
-            var model = new PollIndexDto
-            {
-                Polls = polls,
-                User = user
-            };
-
-            return View(model);
+            var polls = _pollService.GetAllUserPolls(GetCurrentUserId());
+            return View(polls);
         }
 
 
@@ -85,15 +58,8 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Create(long userId)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
-            }
-
             var model = new PollInputDto
             {
                 UserId = userId,
@@ -107,14 +73,10 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        [Authorize]
         public IActionResult Create(PollInputDto input)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
-            }
+                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 
             _pollService.Create(input);
             _uow.SaveChanges();
@@ -127,15 +89,8 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Update(long id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
-            }
-
             var poll = _pollService.GetToUpdate(id);
             return View(poll);
         }
@@ -145,19 +100,14 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        [Authorize]
         public IActionResult Update(PollInputDto input)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
-            }
+                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 
             _pollService.Update(input);
-
             _uow.SaveChanges();
-            return RedirectToAction("Details", new {id = input.Id});
+            return RedirectToAction("Details", new { id = input.Id });
         }
 
 
@@ -165,30 +115,10 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Details(long id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
-            }
-
-            var questions = _questionService.GetListByPollId(id);
-            var poll = _pollService.GetById(id);
-            poll.TotalResponses = _choiceService.GetPollTotalResponses(poll.Id);
-            var model = new PollDetailsDto
-            {
-                Poll = poll,
-                Questions = questions.Select(question => new QuestionDetailDto
-                {
-                    Question = question,
-                    Answers = _answerService.GetListByQuestionId(question.Id)
-                }),
-                User = _userService.GetById(poll.UserId)
-            };
-
-            return View(model);
+            var poll = _pollService.GetPollDetails(id);
+            return View(poll);
         }
 
 
@@ -196,15 +126,8 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Delete(long id, string returnUrl)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
-            }
-
             var poll = _pollService.GetById(id);
             var userId = GetCurrentUserId();
             if (poll.UserId == userId)
@@ -212,11 +135,13 @@ namespace Web.Areas.Admin.Controllers
                 _pollService.Delete(id);
                 _uow.SaveChanges();
             }
+            else
+            {
+                throw new Exception("You are not the owner");
+            }
 
             if (returnUrl is not null)
-            {
                 return LocalRedirect(returnUrl);
-            }
 
             return RedirectToAction("Index");
         }
@@ -226,42 +151,9 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Results(long id)
         {
-            var poll = _pollService.GetById(id);
-            var pollQuestions = _questionService.GetListByPollId(id);
-            var questions = new List<QuestionResultOutputDto>();
-
-            foreach (var question in pollQuestions)
-            {
-                var questionAnswers = _answerService.GetListByQuestionId(question.Id);
-                var answerResults = new List<AnswerResultsDto>();
-                foreach (var ansResult in questionAnswers)
-                {
-                    answerResults.Add(
-                        new AnswerResultsDto()
-                        {
-                            AnswerName = ansResult.Title,
-                            TotalResponses = _choiceService.GetAnswerTotalResponses(ansResult.Id)
-                        }
-                    );
-                }
-
-                questions.Add(new QuestionResultOutputDto()
-                {
-                    QuestionName = question.Title,
-                    AnswersResults = answerResults
-                });
-            }
-
-
-            var model = new PollResultsDto
-            {
-                PollTitle = poll.Title,
-                TotalResponses = _choiceService.GetPollTotalResponses(id),
-                Questions = questions
-            };
+            var model = _pollService.GetPollResult(id);
             return View(model);
         }
     }

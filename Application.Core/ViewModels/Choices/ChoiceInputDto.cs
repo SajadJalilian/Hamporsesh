@@ -5,12 +5,10 @@ namespace Hamporsesh.Application.Core.ViewModels.Choices
 {
     public class ChoiceInputDto
     {
-
         public long VisitorId { get; set; }
         public long PollId { get; set; }
         public List<QuestionAnswersDto> Questions { get; set; }
         public long ParticipateUserId { get; set; }
-
+        public long AnsweresId { get; set; }
     }
-
 }

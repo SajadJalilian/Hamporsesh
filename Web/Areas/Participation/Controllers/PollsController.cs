@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Hamporsesh.Application.Answers;
+﻿using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Choices;
-using Microsoft.AspNetCore.Mvc;
 using Hamporsesh.Application.Core.ViewModels.Choices;
 using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Core.ViewModels.Questions;
@@ -11,6 +7,10 @@ using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Application.Users;
 using Hamporsesh.Application.Visitors;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Web.Extensions;
 
 namespace Web.Areas.Participation.Controllers
@@ -56,10 +56,10 @@ namespace Web.Areas.Participation.Controllers
             //     return RedirectToAction(actionName: "index", controllerName: "home");
             // }
 
-            var poll = _pollService.GetByIdAdmin(id);
+            var poll = _pollService.GetById(id);
             var questions = _questionService.GetListByPollId(id);
 
-            var model = new PollDetailsViewDto()
+            var model = new PollDetailsDto()
             {
                 Poll = poll,
                 Questions = questions.Select(question => new QuestionDetailDto
@@ -77,7 +77,7 @@ namespace Web.Areas.Participation.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        public IActionResult Participate(ChoiceInputTest input)
+        public IActionResult Participate(ChoiceInputDto input)
         {
             HashSet<long> questionIds = new HashSet<long>();
             foreach (var item in input.AnsweresId)
@@ -101,18 +101,18 @@ namespace Web.Areas.Participation.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
 
-            var qqq = new List<Question1>();
+            var qqq = new List<QuestionDetailDto>();
             foreach (var item in input.AnsweresId)
             {
                 var itemArr = item.Split("-");
                 qqq.Add(new Question1
                 {
                     QuestionId = long.Parse(itemArr[0]),
-                    AnsweresId = new long[] {long.Parse(itemArr[1])},
+                    AnsweresId = new long[] { long.Parse(itemArr[1]) },
                 });
             }
 

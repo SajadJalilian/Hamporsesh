@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using Hamporsesh.Application.Answers;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Application.Users;
-using Web.Extensions;
 using Hamporsesh.Infrastructure.Data.Context;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Web.Extensions;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -47,9 +47,8 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
-
 
             return View();
         }
@@ -64,7 +63,7 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             var model = new QuestionInputDto
@@ -84,14 +83,14 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             _questionService.Create(input);
             _uow.SaveChanges();
 
             return RedirectToAction(actionName: nameof(PollsController.Details), controllerName: "polls",
-                routeValues: new {id = input.PollId});
+                routeValues: new { id = input.PollId });
         }
 
 
@@ -104,7 +103,7 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             var model = new QuestionDetailDto
@@ -125,10 +124,10 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
-            ViewBag.QuestrionTypes = new List<string>() {"0", "1"};
+            ViewBag.QuestrionTypes = new List<string>() { "0", "1" };
             var question = _questionService.GetToUpdate(id);
             return View(question);
         }
@@ -143,7 +142,7 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             var poll = _pollService.GetById(input.PollId);
@@ -154,7 +153,7 @@ namespace Web.Areas.Admin.Controllers
                 _questionService.Update(input);
             }
 
-            return RedirectToAction("Details", new {id = input.Id});
+            return RedirectToAction("Details", new { id = input.Id });
         }
 
 
@@ -167,13 +166,13 @@ namespace Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new {result = false, message = errors});
+                return Json(new { result = false, message = errors });
             }
 
             var question = _questionService.GetbyId(id);
             _questionService.Delete(id);
 
-            return RedirectToAction("Details", "Polls", new {id = question.Id, area = "Admin"});
+            return RedirectToAction("Details", "Polls", new { id = question.Id, area = "Admin" });
         }
     }
 }

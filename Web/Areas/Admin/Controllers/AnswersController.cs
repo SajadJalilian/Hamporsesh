@@ -16,27 +16,19 @@ namespace Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class AnswersController : Controller
     {
-        private readonly IPollService _pollService;
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
-        private readonly IUserService _userService;
         private readonly IUnitOfWork _uow;
 
         public AnswersController(
             IPollService pollService,
             IQuestionService questionService,
             IAnswerService answerService,
-            IUserService userService,
-            IChoiceService choiceService,
-            IVisitorService visitorService,
             IUnitOfWork uow
-
         )
         {
-            _pollService = pollService;
             _questionService = questionService;
             _answerService = answerService;
-            _userService = userService;
             _uow = uow;
         }
 
@@ -81,7 +73,6 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        [Authorize]
         public IActionResult Create(AnswerInputDto input)
         {
             if (!ModelState.IsValid)
@@ -101,7 +92,6 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Details(long id)
         {
             if (!ModelState.IsValid)
@@ -119,7 +109,6 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Update(long id)
         {
             if (!ModelState.IsValid)
@@ -141,7 +130,6 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        [Authorize]
         public IActionResult Update(AnswerInputDto input)
         {
             if (!ModelState.IsValid)
@@ -164,7 +152,6 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Delete(long id)
         {
             if (!ModelState.IsValid)

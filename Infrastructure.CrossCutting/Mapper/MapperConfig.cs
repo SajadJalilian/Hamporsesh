@@ -1,4 +1,5 @@
-﻿using Infrastructure.CrossCutting.Mapper.Profiles;
+﻿using Hamporsesh.Application.Core.ViewModels.Answers;
+using Infrastructure.CrossCutting.Mapper.Profiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -13,7 +14,7 @@ namespace Infrastructure.CrossCutting.Mapper
             
 
             services.AddAutoMapper(typeof(AccountProfile));
-            services.AddAutoMapper(typeof(AnswerOutputViewModel));
+            services.AddAutoMapper(typeof(AnswerOutputDto));
             services.AddAutoMapper(typeof(AnswerProfile));
             services.AddAutoMapper(typeof(ChoiceProfile));
             services.AddAutoMapper(typeof(DashboardProfile));

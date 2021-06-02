@@ -9,7 +9,7 @@ namespace Hamporsesh.Application.Core.ViewModels.Dashboard
         public long TotalQuestions { get; set; }
         public long TotalAnswers { get; set; }
         public long TotalResponses { get; set; }
-        public IEnumerable<PollOutputViewModelAdmin> Polls { get; set; }
+        public IEnumerable<PollOutputDto> Polls { get; set; }
         public IEnumerable<string> Days { get; set; }
         public IEnumerable<long> Responses { get; set; }
 
