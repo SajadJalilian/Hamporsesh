@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Hamporsesh.Application.Core.ViewModels.Choices;
+using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
             //CreateMap<BoardInput, UpdateBoardCommand>()
             //   .ConstructUsing(c => new UpdateBoardCommand(c.Id, c.Name, c.Description));
 
-            CreateMap<Choice, ChoiceInputDto>();
+            CreateMap<Choice, PollParticipateDto>();
         }
     }
 }

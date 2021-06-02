@@ -43,7 +43,7 @@ namespace Hamporsesh.Application.Choices
         /// <summary>
         ///     لیستی از جواب‌ها میگیرد ذخیره میکند
         /// </summary>
-        public void Create(ChoiceInputDto input)
+        public void Create(PollParticipateDto input)
         {
 
             foreach (var question in input.Questions)

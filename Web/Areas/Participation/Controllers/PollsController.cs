@@ -7,6 +7,7 @@ using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Application.Users;
 using Hamporsesh.Application.Visitors;
+using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Web.Areas.Participation.Controllers
         private readonly IUserService _userService;
         private readonly IChoiceService _choiceService;
         private readonly IVisitorService _visitorService;
-
+        private readonly IUnitOfWork _uow;
 
         public PollsController(
             IPollService pollService,
@@ -32,7 +33,8 @@ namespace Web.Areas.Participation.Controllers
             IAnswerService answerService,
             IUserService userService,
             IChoiceService choiceService,
-            IVisitorService visitorService
+            IVisitorService visitorService,
+            IUnitOfWork uow
         )
         {
             _pollService = pollService;
@@ -41,6 +43,7 @@ namespace Web.Areas.Participation.Controllers
             _userService = userService;
             _choiceService = choiceService;
             _visitorService = visitorService;
+            _uow = uow;
         }
 
 
@@ -77,8 +80,11 @@ namespace Web.Areas.Participation.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        public IActionResult Participate(ChoiceInputDto input)
+        public IActionResult Participate(PollParticipateDto input)
         {
+            if (!ModelState.IsValid)
+                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
+
             HashSet<long> questionIds = new HashSet<long>();
             foreach (var item in input.AnsweresId)
             {
@@ -98,34 +104,8 @@ namespace Web.Areas.Participation.Controllers
                 ModelState.AddModelError("", "You must fill all questions");
             }
 
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
-
-            var qqq = new List<QuestionDetailDto>();
-            foreach (var item in input.AnsweresId)
-            {
-                var itemArr = item.Split("-");
-                qqq.Add(new Question1
-                {
-                    QuestionId = long.Parse(itemArr[0]),
-                    AnsweresId = new long[] { long.Parse(itemArr[1]) },
-                });
-            }
-
-
-            var model = new ChoiceInputDto
-            {
-                PollId = input.PollId,
-                VisitorId = _visitorService.GetOrSetIdByIp(Request.Host.ToString(), input.PollId),
-                Questions = qqq,
-            };
-
-
-            _choiceService.Create(model);
+            _choiceService.Create(_pollService.Participate(input, Request.Host.ToString()));
+            _uow.SaveChanges();
 
             return RedirectToAction("Done");
         }
@@ -141,4 +121,4 @@ namespace Web.Areas.Participation.Controllers
             return View();
         }
     } // class
-} // namespace
+} // name space

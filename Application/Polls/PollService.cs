@@ -2,13 +2,16 @@
 using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Choices;
 using Hamporsesh.Application.Core.ViewModels.Answers;
+using Hamporsesh.Application.Core.ViewModels.Choices;
 using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Application.Users;
+using Hamporsesh.Application.Visitors;
 using Hamporsesh.Domain.Entities;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,6 +26,7 @@ namespace Hamporsesh.Application.Polls
         private readonly IChoiceService _choiceService;
         private readonly IAnswerService _answerService;
         private readonly IUserService _userService;
+        private readonly IVisitorService _visitorService;
 
         public PollService(
             IUnitOfWork uow,
@@ -30,7 +34,8 @@ namespace Hamporsesh.Application.Polls
             IQuestionService questionService,
             IChoiceService choiceService,
             IAnswerService answerService,
-            IUserService userService
+            IUserService userService,
+            IVisitorService visitorService
             )
         {
             _uow = uow;
@@ -39,6 +44,7 @@ namespace Hamporsesh.Application.Polls
             _choiceService = choiceService;
             _answerService = answerService;
             _userService = userService;
+            _visitorService = visitorService;
             _polls = uow.Set<Poll>();
         }
 
@@ -194,6 +200,36 @@ namespace Hamporsesh.Application.Polls
                 PollTitle = poll.Title,
                 TotalResponses = _choiceService.GetPollTotalResponses(id),
                 Questions = questions
+            };
+
+            return model;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public PollParticipateDto Participate(PollParticipateDto input, string ip)
+        {
+            var questionDetailList = new List<QuestionAnswersDto>();
+            foreach (var item in input.AnsweresId)
+            {
+                var itemArr = item.Split("-");
+                questionDetailList.Add(new QuestionAnswersDto
+                {
+                    QuestionId = long.Parse(itemArr[0]),
+                    AnsweresId = new long[] { long.Parse(itemArr[1]) },
+                });
+            }
+
+
+            var model = new PollParticipateDto
+            {
+                PollId = input.PollId,
+                VisitorId = _visitorService.GetOrSetIdByIp(ip, input.PollId),
+                Questions = questionDetailList,
             };
 
             return model;

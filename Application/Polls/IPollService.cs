@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Hamporsesh.Application.Core.ViewModels.Choices;
 using Hamporsesh.Application.Core.ViewModels.Polls;
 
 namespace Hamporsesh.Application.Polls
@@ -71,5 +72,12 @@ namespace Hamporsesh.Application.Polls
         /// <param name="id"></param>
         /// <returns></returns>
         PollResultsDto GetPollResult(long id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        PollParticipateDto Participate(PollParticipateDto input, string ip);
     }
 }

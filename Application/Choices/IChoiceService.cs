@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Hamporsesh.Application.Core.ViewModels.Choices;
+﻿using Hamporsesh.Application.Core.ViewModels.Choices;
 using Hamporsesh.Application.Core.ViewModels.Polls;
+using System;
+using System.Collections.Generic;
 
 namespace Hamporsesh.Application.Choices
 {
@@ -10,7 +10,7 @@ namespace Hamporsesh.Application.Choices
         /// <summary>
         /// لیستی از جواب‌ها میگیرد ذخیره میکند
         /// </summary>
-        void Create(ChoiceInputDto input);
+        void Create(PollParticipateDto input);
 
         /// <summary>
         /// 
