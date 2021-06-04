@@ -1,4 +1,6 @@
-﻿namespace Hamporsesh.Application.Core.ViewModels.Polls
+﻿using Hamporsesh.Domain.Core.Enums;
+
+namespace Hamporsesh.Application.Core.ViewModels.Polls
 {
     public class PollOutputDto
     {
@@ -8,5 +10,6 @@
         public long UserId { get; set; }
         public string CreateDateTimeStr { get; set; }
         public long TotalResponses { get; set; }
+        public PollStatus Status { get; set; }
     }
 }
