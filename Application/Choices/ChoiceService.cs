@@ -15,28 +15,16 @@ namespace Hamporsesh.Application.Choices
 {
     public class ChoiceService : IChoiceService
     {
-        private readonly IAnswerService _answerService;
         private readonly DbSet<Choice> _choices;
-        private readonly IPollService _pollService;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _uow;
-        private readonly IUserService _userService;
-
 
         public ChoiceService(
             IUnitOfWork uow,
-            IUserService userService,
-            IAnswerService answerService,
-            IPollService pollService,
             IMapper mapper
         )
         {
-            _uow = uow;
-            _userService = userService;
-            _answerService = answerService;
-            _pollService = pollService;
-            _mapper = mapper;
             _choices = uow.Set<Choice>();
+            _mapper = mapper;
         }
 
 
@@ -45,7 +33,6 @@ namespace Hamporsesh.Application.Choices
         /// </summary>
         public void Create(PollParticipateDto input)
         {
-
             foreach (var question in input.Questions)
                 foreach (var answereId in question.AnsweresId)
                 {
@@ -65,70 +52,11 @@ namespace Hamporsesh.Application.Choices
 
         /// <summary>
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public IEnumerable<PollOutputDto> GetPollsByParticipatedUserId(long id)
-        {
-            var userChoices = _choices.Where(r => r.UserId == id);
-            var user = _userService.GetById(id);
-            var pollIds = new HashSet<long>();
-            var polls = new List<PollOutputDto>();
-
-            foreach (var choice in userChoices)
-            {
-                var poll = _pollService.GetById(choice.PollId);
-
-                if (pollIds.All(c => c != choice.PollId)) polls.Add(poll);
-
-                pollIds.Add(choice.PollId);
-            }
-
-            return polls.OrderByDescending(p => p.Id)
-                .Select(poll => _mapper.Map<PollOutputDto>(poll));
-        }
-
-
-        /// <summary>
-        /// </summary>
-        public IEnumerable<ChoiceOutputDto> GetUserPollChoices(long userId, long pollid)
-        {
-            var choices = _uow.Set<Choice>();
-
-            return choices.Where(c => c.PollId == pollid && c.UserId == userId)
-                .Select(choices =>
-
-                new ChoiceOutputDto
-                {
-                    id = choices.Id,
-                    UserId = choices.UserId,
-                    Answer = _answerService.GetById(choices.AnswereId)
-                }
-
-                ).ToList();
-        }
-
-
-        /// <summary>
-        /// </summary>
         /// <param name="pollId"></param>
         /// <returns></returns>
         public long GetPollTotalResponses(long pollId)
         {
               return _choices.Count(c => c.PollId == pollId);
-        }
-
-
-        /// <summary>
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public long GetAllPollsTotalResponses(long userId)
-        {
-            var userPolls = _pollService.GetListByUserId(userId);
-            long totalCount = 0;
-            foreach (var poll in userPolls) totalCount += _choices.Count(c => c.PollId == poll.Id);
-
-            return totalCount;
         }
 
 
@@ -175,6 +103,14 @@ namespace Hamporsesh.Application.Choices
         public long GetAnswerTotalResponses(long id)
         {
             return _choices.Count(c => c.AnswereId == id);
+        }
+
+        public IEnumerable<ChoiceOutputDto> UserChoices(long userId)
+        {
+            var userChoices = _choices.Where(r => r.UserId == userId);
+
+            return userChoices.Select(c => _mapper.Map<ChoiceOutputDto>(c));
+
         }
     }
 }

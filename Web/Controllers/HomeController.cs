@@ -1,23 +1,14 @@
-﻿using Hamporsesh.Application.Polls;
-using Hamporsesh.Application.Questions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly IPollService _pollService;
-        private readonly IQuestionService _questionService;
 
-        public HomeController(
-            IPollService pollService,
-            IQuestionService questionService
-            )
+        public HomeController()
         {
-            _pollService = pollService;
-            _questionService = questionService;
-        }
 
+        }
 
 
         /// <summary>
@@ -26,11 +17,8 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var polls = _pollService.GetAll();
-
-            return View(polls);
+            return View();
         }
-
 
 
         /// <summary>

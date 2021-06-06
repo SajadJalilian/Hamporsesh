@@ -16,7 +16,6 @@ namespace Web.Areas.Admin.Controllers
     {
         private readonly IPollService _pollService;
         private readonly IQuestionService _questionService;
-        private readonly IAnswerService _answerService;
         private readonly IUserService _userService;
         private readonly IChoiceService _choiceService;
 
@@ -24,14 +23,12 @@ namespace Web.Areas.Admin.Controllers
         public DashboardController(
             IPollService pollService,
             IQuestionService questionService,
-            IAnswerService answerService,
             IUserService userService,
             IChoiceService choiceService
         )
         {
             _pollService = pollService;
             _questionService = questionService;
-            _answerService = answerService;
             _userService = userService;
             _choiceService = choiceService;
         }
@@ -44,7 +41,7 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var user = _userService.GetById(GetCurrentUserId());
-            var polls = _pollService.GetAll();
+            var polls = _pollService.GetAll(GetCurrentUserId());
             var chart = _choiceService.GetLast30DaysResponses();
             var days = chart.Days.Select(d => d.ToPersianDateTimeString());
             var responses = chart.ResponseCounts.Select(r => long.Parse(r.ToString()));
@@ -56,9 +53,9 @@ namespace Web.Areas.Admin.Controllers
                 Days = days,
                 Responses = responses,
                 TotalPolls = _pollService.GetUserPollCount(user.Id),
-                TotalResponses = _choiceService.GetAllPollsTotalResponses(user.Id),
+                TotalResponses = _pollService.GetAllPollsTotalResponses(user.Id),
                 TotalQuestions = _questionService.GetUserTotalQuestions(user.Id),
-                TotalAnswers = _answerService.GetUserTotalAnswers(user.Id)
+                TotalAnswers = _pollService.GetUserTotalAnswers(user.Id)
             };
 
 

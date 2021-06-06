@@ -6,7 +6,7 @@
 }
 
 <h1>Update</h1>
-@Html.Partial("_SaveForm", Model)
+@Html.PartialAsync("_SaveForm", Model)
 
 <div>
     @Html.ActionLink(linkText: "back", actionName: "Details", controllerName: "Polls", routeValues: new { id = Model.Id })

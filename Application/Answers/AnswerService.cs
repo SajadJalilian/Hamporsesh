@@ -14,20 +14,14 @@ namespace Hamporsesh.Application.Answers
     public class AnswerService : IAnswerService
     {
         private readonly DbSet<Answer> _answers;
-        private readonly IPollService _pollService;
-        private readonly IQuestionService _questionService;
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
         public AnswerService(
-            IPollService pollService,
-            IQuestionService questionService,
             IUnitOfWork uow,
             IMapper mapper
         )
         {
-            _pollService = pollService;
-            _questionService = questionService;
             _uow = uow;
             _mapper = mapper;
             _answers = uow.Set<Answer>();
@@ -109,37 +103,19 @@ namespace Hamporsesh.Application.Answers
 
 
         /// <summary>
+        /// 
         /// </summary>
-        public IEnumerable<AnswerOutputDto> GetAllPollAnswers(long pollId)
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public long GetAnswerQuestionCount(long id)
         {
-            var pollQuestions = _questionService.GetListByPollId(pollId);
-            List<AnswerOutputDto> pollAnswers = new();
-            foreach (var question in pollQuestions)
-                pollAnswers.Add((AnswerOutputDto)_answers.Where(a => a.QuestionId == question.Id)
-                    .Select(answer => _mapper.Map<AnswerOutputDto>(answer)));
-
-            return pollAnswers;
+            return _answers.Count(a => a.QuestionId == id);
         }
 
-
-        /// <summary>
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public long GetUserTotalAnswers(long userId)
+        public IEnumerable<AnswerOutputDto> GetAnswerByQuestionId(long id)
         {
-            var userPolls = _pollService.GetListByUserId(userId);
-            var userQuestions = new List<QuestionOutputDto>();
-            var totalCount = 0;
-
-            foreach (var poll in userPolls)
-                userQuestions.AddRange(
-                    _questionService.GetListByPollId(poll.Id)
-                );
-
-            foreach (var question in userQuestions) totalCount += _answers.Count(a => a.QuestionId == question.Id);
-
-            return totalCount;
+            return _answers.Where(a => a.QuestionId == id)
+                .Select(a => _mapper.Map<AnswerOutputDto>(a));
         }
     }
 }

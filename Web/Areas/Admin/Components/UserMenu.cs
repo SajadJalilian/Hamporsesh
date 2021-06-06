@@ -18,7 +18,7 @@ namespace Web.Areas.Admin.Components
             var currentUserName = this.User.Identity.Name;
             var user = _userService.GetByUserName(currentUserName);
 
-            return View(user);
+            return  View(user);
         }
 
 

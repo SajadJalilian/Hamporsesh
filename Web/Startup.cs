@@ -1,4 +1,3 @@
-using Hamporsesh.Infrastructure.Data.Context;
 using Infrastructure.CrossCutting.Identity;
 using Infrastructure.CrossCutting.Ioc;
 using Infrastructure.CrossCutting.Mapper;
@@ -7,33 +6,28 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 namespace Web
 {
     public class Startup
     {
-        private readonly IUnitOfWork _uow;
         public IConfiguration Configuration { get; }
 
 
         public Startup(
-            IConfiguration configuration,
-            IUnitOfWork uow
+            IConfiguration configuration
         )
         {
-            _uow = uow;
             Configuration = configuration;
         }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
             services.AddIdentityConfiguration(Configuration);
             services.AddAutoMapperSetup();
-
-            return services.ConfigureIocContainer(Configuration);
+            services.AddIocConfig(Configuration);
         }
 
 

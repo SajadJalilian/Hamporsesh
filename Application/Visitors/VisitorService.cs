@@ -7,14 +7,10 @@ namespace Hamporsesh.Application.Visitors
 {
     public class VisitorService : IVisitorService
     {
-        private readonly IUnitOfWork _uow;
         private readonly DbSet<Visitor> _visitors;
-
-
 
         public VisitorService(IUnitOfWork uow)
         {
-            _uow = uow;
             _visitors = uow.Set<Visitor>();
         }
 

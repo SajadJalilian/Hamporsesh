@@ -116,9 +116,9 @@ namespace Hamporsesh.Application.Polls
 
         /// <summary>
         /// </summary>
-        public IEnumerable<PollOutputDto> GetAll()
+        public IEnumerable<PollOutputDto> GetAll(long userId)
         {
-            return _polls.OrderByDescending(u => u.Id)
+            return _polls.OrderByDescending(u => u.Id == userId)
                 .Select(poll => _mapper.Map<PollOutputDto>(poll)).ToList();
         }
 
@@ -233,6 +233,122 @@ namespace Hamporsesh.Application.Polls
             };
 
             return model;
+        }
+
+
+        /// <summary>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public long GetUserTotalQuestions(long userId)
+        {
+            var userPolls = GetListByUserId(userId);
+            long totalCount = 0;
+
+            foreach (var poll in userPolls) totalCount += _questionService.GetpollQuestionCount(poll.Id);
+                   
+            return totalCount;
+        }
+
+
+
+
+        /// <summary>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IEnumerable<PollOutputDto> GetPollsByParticipatedUserId(long id)
+        {
+            var userChoices = _choiceService.UserChoices(id);
+            var user = _userService.GetById(id);
+            var pollIds = new HashSet<long>();
+            var polls = new List<PollOutputDto>();
+
+            foreach (var choice in userChoices)
+            {
+                var poll = GetById(choice.PollId);
+
+                if (pollIds.All(c => c != choice.PollId)) polls.Add(poll);
+
+                pollIds.Add(choice.PollId);
+            }
+
+            return polls.OrderByDescending(p => p.Id)
+                .Select(poll => _mapper.Map<PollOutputDto>(poll));
+        }
+
+
+        /// <summary>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public long GetAllPollsTotalResponses(long userId)
+        {
+            var userPolls = GetListByUserId(userId);
+            long totalCount = 0;
+            foreach (var poll in userPolls) totalCount += _choiceService.GetPollTotalResponses(poll.Id);
+
+            return totalCount;
+        }
+
+
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<ChoiceWithAnswerDto> GetUserPollChoices(long userId, long pollid)
+        {
+            var choices = _uow.Set<Choice>();
+
+            return choices.Where(c => c.PollId == pollid && c.UserId == userId)
+                .Select(choices =>
+
+                new ChoiceWithAnswerDto
+                {
+                    Id = choices.Id,
+                    UserId = choices.UserId,
+                    Answer = _answerService.GetById(choices.AnswereId)
+                }
+
+                ).ToList();
+        }
+
+
+
+        /// <summary>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public long GetUserTotalAnswers(long userId)
+        {
+            var userPolls = GetListByUserId(userId);
+            var userQuestions = new List<QuestionOutputDto>();
+            long totalCount = 0;
+
+            foreach (var poll in userPolls)
+                userQuestions.AddRange(
+                    _questionService.GetListByPollId(poll.Id)
+                );
+
+            foreach (var question in userQuestions) totalCount += _answerService.GetAnswerQuestionCount(question.Id);
+
+            return totalCount;
+        }
+
+
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<AnswerOutputDto> GetAllPollAnswers(long pollId)
+        {
+            var pollQuestions = _questionService.GetListByPollId(pollId);
+            List<AnswerOutputDto> pollAnswers = new();
+            foreach (var question in pollQuestions)
+            {
+                var questionAnswers = _answerService.GetAnswerByQuestionId(question.Id);
+                pollAnswers.AddRange(questionAnswers.ToList());
+            }
+
+            return pollAnswers;
         }
     }
 }

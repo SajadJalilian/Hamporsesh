@@ -8,6 +8,6 @@ namespace Hamporsesh.Application.Core.ViewModels.Users
     {
         public UserOutputDto User { get; set; }
         public PollOutputDto Poll { get; set; }
-        public IEnumerable<ChoiceOutputDto> Choices { get; set; }
+        public IEnumerable<ChoiceWithAnswerDto> Choices { get; set; }
     }
 }

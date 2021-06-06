@@ -12,22 +12,16 @@ namespace Hamporsesh.Application.Questions
 {
     public class QuestionService : IQuestionService
     {
-        private readonly IPollService _pollService;
         private readonly IMapper _mapper;
         private readonly DbSet<Question> _questions;
         private readonly IUnitOfWork _uow;
-        private readonly IUserService _userService;
 
         public QuestionService(
-            IUserService userService,
             IUnitOfWork uow,
-            IPollService pollService,
             IMapper mapper
         )
         {
-            _userService = userService;
             _uow = uow;
-            _pollService = pollService;
             _mapper = mapper;
             _questions = uow.Set<Question>();
         }
@@ -100,20 +94,20 @@ namespace Hamporsesh.Application.Questions
             _uow.MarkAsDeleted(question);
         }
 
-
-        /// <summary>
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
         public long GetUserTotalQuestions(long userId)
         {
-            var user = _userService.GetById(userId);
-            var userPolls = _pollService.GetListByUserId(userId);
-            long totalCount = 0;
+            throw new System.NotImplementedException();
+        }
 
-            foreach (var poll in userPolls) totalCount += _questions.Count(q => q.PollId == poll.Id);
 
-            return totalCount;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public long GetpollQuestionCount(long id)
+        {
+            return _questions.Count(q => q.PollId == id);
         }
     }
 }

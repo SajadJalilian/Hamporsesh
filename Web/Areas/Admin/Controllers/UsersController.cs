@@ -14,19 +14,16 @@ namespace Web.Areas.Admin.Controllers
     {
         private readonly IUserService _userService;
         private readonly IPollService _pollService;
-        private readonly IChoiceService _choiceService;
         private readonly IUnitOfWork _uow;
 
         public UsersController(
                 IUserService userService,
                 IPollService pollService,
-                IChoiceService choiceService,
                 IUnitOfWork uow
             )
         {
             _userService = userService;
             _pollService = pollService;
-            _choiceService = choiceService;
             _uow = uow;
         }
 
@@ -108,7 +105,7 @@ namespace Web.Areas.Admin.Controllers
             {
                 User = user,
                 Polls = _pollService.GetListByUserId(id),
-                ParticipatedPolls = _choiceService.GetPollsByParticipatedUserId(id)
+                ParticipatedPolls = _pollService.GetPollsByParticipatedUserId(id)
             };
             return View(model);
         }

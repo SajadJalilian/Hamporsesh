@@ -18,27 +18,15 @@ namespace Web.Areas.Admin.Controllers
     public class PollsController : BaseController
     {
         private readonly IPollService _pollService;
-        private readonly IQuestionService _questionService;
-        private readonly IAnswerService _answerService;
-        private readonly IUserService _userService;
-        private readonly IChoiceService _choiceService;
         private readonly IUnitOfWork _uow;
 
 
         public PollsController(
             IPollService pollService,
-            IQuestionService questionService,
-            IAnswerService answerService,
-            IUserService userService,
-            IChoiceService choiceService,
             IUnitOfWork uow
         )
         {
             _pollService = pollService;
-            _questionService = questionService;
-            _answerService = answerService;
-            _userService = userService;
-            _choiceService = choiceService;
             _uow = uow;
         }
 
