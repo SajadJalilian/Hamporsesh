@@ -1,11 +1,9 @@
 ﻿using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Choices;
-using Hamporsesh.Application.Core.ViewModels.Choices;
 using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
-using Hamporsesh.Application.Users;
 using Hamporsesh.Application.Visitors;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +20,6 @@ namespace Web.Areas.Participation.Controllers
         private readonly IPollService _pollService;
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
-        private readonly IUserService _userService;
         private readonly IChoiceService _choiceService;
         private readonly IVisitorService _visitorService;
         private readonly IUnitOfWork _uow;
@@ -31,7 +28,6 @@ namespace Web.Areas.Participation.Controllers
             IPollService pollService,
             IQuestionService questionService,
             IAnswerService answerService,
-            IUserService userService,
             IChoiceService choiceService,
             IVisitorService visitorService,
             IUnitOfWork uow
@@ -40,7 +36,6 @@ namespace Web.Areas.Participation.Controllers
             _pollService = pollService;
             _questionService = questionService;
             _answerService = answerService;
-            _userService = userService;
             _choiceService = choiceService;
             _visitorService = visitorService;
             _uow = uow;
@@ -85,7 +80,7 @@ namespace Web.Areas.Participation.Controllers
             if (!ModelState.IsValid)
                 return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 
-            HashSet<long> questionIds = new HashSet<long>();
+            HashSet<long> questionIds = new();
             foreach (var item in input.AnsweresId)
             {
                 var itemArr = item.Split("-");
@@ -94,7 +89,7 @@ namespace Web.Areas.Participation.Controllers
 
             try
             {
-                if (questionIds.Count() < input.QuestionCount)
+                if (questionIds.Count < input.QuestionCount)
                 {
                     ModelState.AddModelError("", "You must fill all questions");
                 }

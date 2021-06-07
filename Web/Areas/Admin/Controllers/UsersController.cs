@@ -1,15 +1,15 @@
-﻿using Hamporsesh.Application.Choices;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Hamporsesh.Application.Core.ViewModels.Users;
+﻿using Hamporsesh.Application.Core.ViewModels.Users;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Users;
-using Web.Extensions;
 using Hamporsesh.Infrastructure.Data.Context;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Web.Extensions;
 
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
@@ -33,14 +33,8 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Index()
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
             return View();
         }
 
@@ -50,14 +44,8 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Update(long id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
             var user = _userService.GetToUpdate(id);
             return View(user);
         }
@@ -68,14 +56,10 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpPost]
-        [Authorize]
         public IActionResult Update(UserInputDto input)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
+                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
             _userService.Update(input);
             _uow.SaveChanges();
 
@@ -88,18 +72,8 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        [Authorize]
         public IActionResult Profile(long id)
         {
-            #region Validations
-
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
-            #endregion
             var user = _userService.GetById(id);
             ProfileOutputDto model = new()
             {

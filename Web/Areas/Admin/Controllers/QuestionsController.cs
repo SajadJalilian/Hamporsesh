@@ -42,14 +42,8 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        public IActionResult Index(long pollId)
+        public IActionResult Index()
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             return View();
         }
 
@@ -60,12 +54,6 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create(long pollId)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             var model = new QuestionInputDto
             {
                 PollId = pollId,
@@ -81,10 +69,8 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult Create(QuestionInputDto input)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
+                if (!ModelState.IsValid)
+                    return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 
             _questionService.Create(input);
             _uow.SaveChanges();
@@ -100,12 +86,6 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Details(long id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             var model = new QuestionDetailDto
             {
                 Question = _questionService.GetbyId(id),
@@ -121,12 +101,6 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Update(long id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             ViewBag.QuestrionTypes = new List<string>() { "0", "1" };
             var question = _questionService.GetToUpdate(id);
             return View(question);
@@ -140,10 +114,7 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult Update(QuestionInputDto input)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
+                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 
             var poll = _pollService.GetById(input.PollId);
             var user = _userService.GetById(poll.UserId);
@@ -163,12 +134,6 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(long id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             var question = _questionService.GetbyId(id);
             _questionService.Delete(id);
 

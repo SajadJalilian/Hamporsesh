@@ -1,10 +1,6 @@
 ﻿using Hamporsesh.Application.Answers;
-using Hamporsesh.Application.Choices;
 using Hamporsesh.Application.Core.ViewModels.Answers;
-using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
-using Hamporsesh.Application.Users;
-using Hamporsesh.Application.Visitors;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +17,6 @@ namespace Web.Areas.Admin.Controllers
         private readonly IUnitOfWork _uow;
 
         public AnswersController(
-            IPollService pollService,
             IQuestionService questionService,
             IAnswerService answerService,
             IUnitOfWork uow
@@ -37,14 +32,8 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        public IActionResult Index(long questionId)
+        public IActionResult Index()
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             return View();
         }
 
@@ -55,12 +44,6 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create(long questionId)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             var model = new AnswerInputDto
             {
                 QuestionId = questionId
@@ -76,10 +59,7 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult Create(AnswerInputDto input)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
+                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 
             _answerService.Create(input);
             _uow.SaveChanges();
@@ -94,12 +74,6 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Details(long id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             var answer = _answerService.GetById(id);
             return View(answer);
         }
@@ -111,16 +85,9 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Update(long id)
         {
-            if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
-
             var answer = _answerService.GetById(id);
             var question = _questionService.GetbyId(answer.QuestionId);
             ViewData["PollId"] = question.PollId;
-
             var ans = _answerService.GetToUpdate(id);
             return View(ans);
         }
@@ -133,10 +100,7 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult Update(AnswerInputDto input)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
+                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 
             var answer = _answerService.GetToUpdate(input.Id);
             var question = _questionService.GetbyId(answer.QuestionId);
@@ -154,13 +118,6 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(long id)
         {
-            if (!ModelState.IsValid)
-                if (!ModelState.IsValid)
-                {
-                    var errors = Utilities.GetModelStateErrors(ModelState);
-                    return Json(new { result = false, message = errors });
-                }
-
             var ans = _answerService.GetById(id);
             var question = _questionService.GetbyId(ans.QuestionId);
 

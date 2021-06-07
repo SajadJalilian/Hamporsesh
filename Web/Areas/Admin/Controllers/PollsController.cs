@@ -1,9 +1,5 @@
-﻿using Hamporsesh.Application.Answers;
-using Hamporsesh.Application.Choices;
-using Hamporsesh.Application.Core.ViewModels.Polls;
+﻿using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Polls;
-using Hamporsesh.Application.Questions;
-using Hamporsesh.Application.Users;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +44,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-           return View();
+            return View();
         }
 
 

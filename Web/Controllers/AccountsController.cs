@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using Hamporsesh.Application.Core.ViewModels.Account;
-using Hamporsesh.Application.Users;
+﻿using Hamporsesh.Application.Core.ViewModels.Account;
 using Hamporsesh.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Web.Extensions;
 
 namespace Web.Controllers
@@ -14,13 +13,11 @@ namespace Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IUserService _userService;
 
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, IUserService userService)
+        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _userService = userService;
         }
 
 
@@ -46,10 +43,7 @@ namespace Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
             if (!ModelState.IsValid)
-            {
-                var errors = Utilities.GetModelStateErrors(ModelState);
-                return Json(new { result = false, message = errors });
-            }
+                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 
 
             // This doesn't count login failures towards account lockout
@@ -61,8 +55,8 @@ namespace Web.Controllers
                 TempData["Message"] = "Not Found";
                 return RedirectToAction(controllerName: "Accounts", actionName: "Login");
             }
-            return RedirectToAction(actionName: "index", controllerName: "Dashboard", new { area = "Admin"});
-            
+            return RedirectToAction(actionName: "index", controllerName: "Dashboard", new { area = "Admin" });
+
         }
 
 
@@ -129,10 +123,10 @@ namespace Web.Controllers
         public IActionResult ChangePassword()
         {
             return View();
-        }  
-        
+        }
 
-        
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -170,8 +164,8 @@ namespace Web.Controllers
 
             return View(model);
         }
-        
-        
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -179,15 +173,16 @@ namespace Web.Controllers
         public IActionResult ForgetPassword()
         {
             return View();
-        }  
-        
-        
-        
+        }
+
+
+
         /// <summary>
         /// 
         /// </summary>
-        [HttpPost]
-        public IActionResult ForgetPassword(string s)
+        [HttpPost(Name = "ForgetPassword")]
+        [Route("/ForgetPassword")]
+        public IActionResult ForgetPasswordPost()
         {
             return View();
         }
