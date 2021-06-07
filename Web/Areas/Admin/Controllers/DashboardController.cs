@@ -18,6 +18,7 @@ namespace Web.Areas.Admin.Controllers
         private readonly IQuestionService _questionService;
         private readonly IUserService _userService;
         private readonly IChoiceService _choiceService;
+        private readonly IAnswerService _answerService;
 
 
         public DashboardController(
@@ -25,12 +26,13 @@ namespace Web.Areas.Admin.Controllers
             IQuestionService questionService,
             IUserService userService,
             IChoiceService choiceService
-        )
+, IAnswerService answerService)
         {
             _pollService = pollService;
             _questionService = questionService;
             _userService = userService;
             _choiceService = choiceService;
+            _answerService = answerService;
         }
 
 
@@ -53,11 +55,10 @@ namespace Web.Areas.Admin.Controllers
                 Days = days,
                 Responses = responses,
                 TotalPolls = _pollService.GetUserPollCount(user.Id),
-                TotalResponses = _pollService.GetAllPollsTotalResponses(user.Id),
+                TotalResponses = _choiceService.GetAllPollsTotalResponses(user.Id),
                 TotalQuestions = _questionService.GetUserTotalQuestions(user.Id),
-                TotalAnswers = _pollService.GetUserTotalAnswers(user.Id)
+                TotalAnswers = _answerService.GetUserTotalAnswers(user.Id)
             };
-
 
             return View(model);
         }

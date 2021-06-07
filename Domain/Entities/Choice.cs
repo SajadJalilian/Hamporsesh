@@ -10,5 +10,7 @@ namespace Hamporsesh.Domain.Entities
         public long AnswereId { get; set; }
         public long UserId { get; set; }
 
+        public Poll Poll { get; set; }
+
     }
 }

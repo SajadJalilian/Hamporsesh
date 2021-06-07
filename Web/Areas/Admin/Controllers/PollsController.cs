@@ -46,14 +46,9 @@ namespace Web.Areas.Admin.Controllers
         /// 
         /// </summary>
         [HttpGet]
-        public IActionResult Create(long userId)
+        public IActionResult Create()
         {
-            var model = new PollInputDto
-            {
-                UserId = userId,
-            };
-
-            return View(model);
+           return View();
         }
 
 
@@ -63,6 +58,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(PollInputDto input)
         {
+            input.UserId = GetCurrentUserId();
             if (!ModelState.IsValid)
                 return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
 

@@ -7,12 +7,9 @@ namespace Hamporsesh.Application.Choices
 {
     public interface IChoiceService
     {
-
         void Create(PollParticipateDto input);
 
         ChoicesLas30DaysDto GetLast30DaysResponses();
-
-        IEnumerable<DateTime> EachDay(DateTime from, DateTime thru);
 
         long GetAnswerTotalResponses(long id);
 
@@ -20,5 +17,6 @@ namespace Hamporsesh.Application.Choices
 
         IEnumerable<ChoiceOutputDto> UserChoices(long userId);
 
+        long GetAllPollsTotalResponses(long userId);
     }
 }

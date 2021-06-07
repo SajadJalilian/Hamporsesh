@@ -11,12 +11,14 @@ namespace Hamporsesh.Application.Users
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
         private readonly DbSet<User> _users;
 
 
-        public UserService(IUnitOfWork uow)
+        public UserService(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
             _users = uow.Set<User>();
         }
 
@@ -38,7 +40,6 @@ namespace Hamporsesh.Application.Users
         public void Update(UserInputDto input)
         {
             var user = _users.FirstOrDefault(u => u.Id == input.Id);
-
             user.DisplayName = input.DisplayName;
             _uow.MarkAsModified(user);
         }
@@ -49,7 +50,6 @@ namespace Hamporsesh.Application.Users
         public UserOutputDto GetById(long id)
         {
             var user = _users.FirstOrDefault(u => u.Id == id);
-
             return new UserOutputDto
             {
                 Id = user.Id,
@@ -89,13 +89,8 @@ namespace Hamporsesh.Application.Users
         /// </summary>
         public IEnumerable<UserOutputDto> GetAll()
         {
-            return _users.OrderByDescending(u => u.Id)
-                .Select(user => new UserOutputDto
-                {
-                    Id = user.Id,
-                    DisplayName = user.DisplayName,
-                    CreateDateTimeStr = user.CreateDateTime.ToString()
-                }).ToList();
+            var users = _users.OrderByDescending(u => u.Id);
+            return _mapper.Map<IEnumerable<UserOutputDto>>(users);
         }
 
 

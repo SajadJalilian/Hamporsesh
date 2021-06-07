@@ -22,21 +22,15 @@ namespace Hamporsesh.Application.Polls
 
         void Delete(long id);
 
-        IEnumerable<PollOutputDto> GetAllUserPolls(long id);
+        IEnumerable<PollOutputDto> GetAllUserPolls(long userId);
 
         PollDetailsDto GetPollDetails(long id);
 
         PollResultsDto GetPollResult(long id);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        PollParticipateDto Participate(PollParticipateDto input, string ip);
+        PollParticipateDto GetParticipate(PollParticipateDto input, string ip);
 
         IEnumerable<PollOutputDto> GetPollsByParticipatedUserId(long userId);
-        long GetUserTotalAnswers(long id);
-        long GetAllPollsTotalResponses(long id);
+      
     }
 }

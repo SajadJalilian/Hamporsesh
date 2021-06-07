@@ -22,5 +22,9 @@ namespace Hamporsesh.Application.Answers
         long GetAnswerQuestionCount(long id);
 
         IEnumerable<AnswerOutputDto> GetAnswerByQuestionId(long id);
+        long GetUserTotalAnswers(long userId);
+
+        IEnumerable<AnswerOutputDto> GetAllPollAnswers(long pollId);
+
     }
 }

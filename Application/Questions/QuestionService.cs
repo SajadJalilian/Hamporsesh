@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Hamporsesh.Application.Core.ViewModels.Questions;
-using Hamporsesh.Application.Polls;
-using Hamporsesh.Application.Users;
 using Hamporsesh.Domain.Entities;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hamporsesh.Application.Questions
 {
@@ -40,12 +38,9 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public void Update(QuestionInputDto input)
         {
-
             var question = _questions.FirstOrDefault(u => u.Id == input.Id);
-
             question.Title = input.Title;
             question.Type = input.Type;
-
             _questions.Update(question);
         }
 
@@ -54,8 +49,16 @@ namespace Hamporsesh.Application.Questions
         public QuestionOutputDto GetbyId(long id)
         {
             var question = _questions.FirstOrDefault(u => u.Id == id);
-
             return _mapper.Map<QuestionOutputDto>(question);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public long GetUserTotalQuestions(long userId)
+        {
+            return _questions.Count(q => q.Poll.UserId == userId);
         }
 
 
@@ -63,8 +66,8 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public IEnumerable<QuestionOutputDto> GetListByPollId(long pollId)
         {
-            return _questions.Where(q => q.PollId == pollId)
-                .Select(question => _mapper.Map<QuestionOutputDto>(question)).ToList();
+            var questions = _questions.Where(q => q.PollId == pollId);
+            return _mapper.Map<IEnumerable<QuestionOutputDto>>(questions);
         }
 
 
@@ -81,8 +84,8 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public IEnumerable<QuestionOutputDto> GetAll()
         {
-            return _questions.OrderByDescending(q => q.Id)
-                .Select(question => _mapper.Map<QuestionOutputDto>(question)).ToList();
+            var questions = _questions.OrderByDescending(q => q.Id);
+            return _mapper.Map<IEnumerable<QuestionOutputDto>>(questions);
         }
 
 
@@ -94,17 +97,10 @@ namespace Hamporsesh.Application.Questions
             _uow.MarkAsDeleted(question);
         }
 
-        public long GetUserTotalQuestions(long userId)
-        {
-            throw new System.NotImplementedException();
-        }
-
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public long GetpollQuestionCount(long id)
         {
             return _questions.Count(q => q.PollId == id);

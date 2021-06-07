@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using Hamporsesh.Application.Answers;
 using Hamporsesh.Application.Core.ViewModels.Choices;
 using Hamporsesh.Application.Core.ViewModels.Polls;
-using Hamporsesh.Application.Polls;
-using Hamporsesh.Application.Users;
 using Hamporsesh.Domain.Entities;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +22,15 @@ namespace Hamporsesh.Application.Choices
         {
             _choices = uow.Set<Choice>();
             _mapper = mapper;
+        }
+
+
+        /// <summary>
+        /// </summary>
+        private IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        {
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
         }
 
 
@@ -52,11 +58,9 @@ namespace Hamporsesh.Application.Choices
 
         /// <summary>
         /// </summary>
-        /// <param name="pollId"></param>
-        /// <returns></returns>
         public long GetPollTotalResponses(long pollId)
         {
-              return _choices.Count(c => c.PollId == pollId);
+            return _choices.Count(c => c.PollId == pollId);
         }
 
 
@@ -85,32 +89,42 @@ namespace Hamporsesh.Application.Choices
         }
 
 
-        /// <summary>
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="thru"></param>
-        public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
-        {
-            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
-                yield return day;
-        }
-
 
         /// <summary>
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public long GetAnswerTotalResponses(long id)
         {
             return _choices.Count(c => c.AnswereId == id);
         }
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IEnumerable<ChoiceOutputDto> UserChoices(long userId)
         {
             var userChoices = _choices.Where(r => r.UserId == userId);
+            return _mapper.Map<IEnumerable<ChoiceOutputDto>>(userChoices);
+        }
 
-            return userChoices.Select(c => _mapper.Map<ChoiceOutputDto>(c));
 
+
+        /// <summary>
+        /// </summary>
+        public long GetAllPollsTotalResponses(long userId)
+        {
+            return _choices.Count(c => c.Poll.UserId == userId);
+        }
+
+
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<ChoiceWithAnswerDto> GetUserPollChoices(long userId, long pollid)
+        {
+            var choices = _choices.Where(c => c.PollId == pollid && c.UserId == userId);
+            return _mapper.Map<IEnumerable<ChoiceWithAnswerDto>>(choices);
         }
     }
 }

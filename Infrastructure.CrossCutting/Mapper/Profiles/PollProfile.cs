@@ -10,7 +10,10 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
         {
             CreateMap<Poll, PollInputDto>();
             CreateMap<PollInputDto, Poll>();
-            CreateMap<Poll, PollOutputDto>();
+            CreateMap<Poll, PollOutputDto>().ForMember(
+                  dest => dest.CreateDateTimeStr,
+                  src => src.MapFrom(d => d.CreateDateTime.ToPersianDateTimeString())
+                );
             CreateMap<PollOutputDto, Poll>();
         }
     }

@@ -104,7 +104,7 @@ namespace Web.Areas.Participation.Controllers
                 ModelState.AddModelError("", "You must fill all questions");
             }
 
-            _choiceService.Create(_pollService.Participate(input, Request.Host.ToString()));
+            _choiceService.Create(_pollService.GetParticipate(input, Request.Host.ToString()));
             _uow.SaveChanges();
 
             return RedirectToAction("Done");
