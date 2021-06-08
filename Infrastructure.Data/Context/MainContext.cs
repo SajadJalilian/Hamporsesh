@@ -67,7 +67,7 @@ namespace Hamporsesh.Infrastructure.Data.Context
 
         /// <summary>
         /// </summary>
-        public int SaveChanges()
+        new public int SaveChanges()
         {
             return base.SaveChanges();
         }

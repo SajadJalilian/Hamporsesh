@@ -5,7 +5,7 @@ namespace Hamporsesh.Application.Core.ViewModels.Choices
 {
     public class ChoiceInputDto
     {
-        public long id { get; set; }
+        public long Id { get; set; }
         [Required]
         public AnswerOutputDto Answer { get; set; }
         public long UserId { get; set; }
