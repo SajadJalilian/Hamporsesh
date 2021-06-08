@@ -4,7 +4,7 @@ using Hamporsesh.Domain.Entities;
 
 namespace Infrastructure.CrossCutting.Mapper.Profiles
 {
-    class AnswerProfile: Profile
+    class AnswerProfile : Profile
     {
         public AnswerProfile()
         {

@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Hamporsesh.Domain.Core.Enums;
+﻿using Hamporsesh.Domain.Core.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hamporsesh.Application.Core.ViewModels.Questions
 {

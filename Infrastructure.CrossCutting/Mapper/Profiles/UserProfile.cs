@@ -10,7 +10,7 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
         {
             CreateMap<User, UserOutputDto>();
             CreateMap<User, UserInputDto>();
-            CreateMap<User, UserInputDto > ().ForMember(
+            CreateMap<User, UserInputDto>().ForMember(
                   dst => dst.CreateDateTimeStr,
                   src => src.MapFrom(c => c.CreateDateTime.ToPersianDateTimeString())
                 );

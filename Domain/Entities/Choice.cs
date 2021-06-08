@@ -2,7 +2,7 @@
 
 namespace Hamporsesh.Domain.Entities
 {
-    public class Choice: BaseEntity
+    public class Choice : BaseEntity
     {
         public long VisitorId { get; set; }
         public long PollId { get; set; }

@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Hamporsesh.Application.Core.ViewModels.Answers;
+﻿using Hamporsesh.Application.Core.ViewModels.Answers;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hamporsesh.Application.Core.ViewModels.Choices
 {

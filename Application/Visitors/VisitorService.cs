@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Hamporsesh.Domain.Entities;
+﻿using Hamporsesh.Domain.Entities;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Hamporsesh.Application.Visitors
 {
@@ -15,7 +15,7 @@ namespace Hamporsesh.Application.Visitors
         }
 
 
-            public long GetOrSetIdByIp(string ip, long pollId)
+        public long GetOrSetIdByIp(string ip, long pollId)
         {
             var visitor = _visitors.FirstOrDefault(v => v.IP == ip && v.PollId == pollId);
             if (visitor == null)

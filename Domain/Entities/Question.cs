@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Hamporsesh.Domain.Core.Enums;
+﻿using Hamporsesh.Domain.Core.Enums;
 using Hamporsesh.Domain.Core.Models;
+using System.Collections.Generic;
 
 namespace Hamporsesh.Domain.Entities
 {
@@ -17,7 +15,7 @@ namespace Hamporsesh.Domain.Entities
         public List<Answer> Answers { get; set; }
 
 
-       // [ForeignKey("PollId")]
+        // [ForeignKey("PollId")]
         public Poll Poll { get; set; }
     }
 

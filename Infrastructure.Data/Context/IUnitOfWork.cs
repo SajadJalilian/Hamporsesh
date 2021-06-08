@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Hamporsesh.Domain.Core.Models;
+﻿using Hamporsesh.Domain.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hamporsesh.Infrastructure.Data.Context
 {

@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using Hamporsesh.Application.Core.ViewModels.Choices;
-using Hamporsesh.Application.Core.ViewModels.Polls;
+﻿using Hamporsesh.Application.Core.ViewModels.Polls;
+using System.Collections.Generic;
 
 namespace Hamporsesh.Application.Polls
 {
@@ -31,6 +30,6 @@ namespace Hamporsesh.Application.Polls
         PollParticipateDto GetParticipate(PollParticipateDto input, string ip);
 
         IEnumerable<PollOutputDto> GetPollsByParticipatedUserId(long userId);
-      
+
     }
 }

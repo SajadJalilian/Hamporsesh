@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Hamporsesh.Application.Core.ViewModels.Questions;
+﻿using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Core.ViewModels.Users;
+using System.Collections.Generic;
 
 namespace Hamporsesh.Application.Core.ViewModels.Polls
 {

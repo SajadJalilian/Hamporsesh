@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Hamporsesh.Application.Core.ViewModels.Users;
+﻿using Hamporsesh.Application.Core.ViewModels.Users;
+using System.Collections.Generic;
 
 namespace Hamporsesh.Application.Users
 {

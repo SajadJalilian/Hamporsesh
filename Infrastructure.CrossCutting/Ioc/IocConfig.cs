@@ -7,8 +7,6 @@ using Hamporsesh.Application.Visitors;
 using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using StructureMap;
-using System;
 
 namespace Infrastructure.CrossCutting.Ioc
 {
