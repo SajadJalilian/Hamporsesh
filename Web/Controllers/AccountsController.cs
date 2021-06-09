@@ -64,7 +64,7 @@ namespace Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        [HttpGet]
+        [HttpGet("/logout")]
         [Authorize]
         public async Task<IActionResult> Logout()
         {
@@ -78,7 +78,8 @@ namespace Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        [HttpGet]
+        [HttpGet("/register")]
+
         public IActionResult Register()
         {
             return View();
@@ -89,7 +90,7 @@ namespace Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        [HttpPost]
+        [HttpPost("/register")]
         public async Task<IActionResult> Register(RegisterDto input)
         {
             if (!ModelState.IsValid)
@@ -119,7 +120,7 @@ namespace Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        [HttpGet]
+        [HttpGet("/changePassword")]
         public IActionResult ChangePassword()
         {
             return View();
@@ -130,7 +131,7 @@ namespace Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        [HttpPost]
+        [HttpPost("/changePassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
         {
             if (ModelState.IsValid)
@@ -169,7 +170,7 @@ namespace Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        [HttpGet]
+        [HttpGet("/forgetPassword")]
         public IActionResult ForgetPassword()
         {
             return View();
@@ -180,8 +181,7 @@ namespace Web.Controllers
         /// <summary>
         /// 
         /// </summary>
-        [HttpPost(Name = "ForgetPassword")]
-        [Route("/ForgetPassword")]
+        [HttpPost("/forgetPassword")]
         public IActionResult ForgetPasswordPost()
         {
             return View();

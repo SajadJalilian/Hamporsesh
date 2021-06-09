@@ -23,6 +23,8 @@ namespace Hamporsesh.Application.Polls
 
         IEnumerable<PollOutputDto> GetAllUserPolls(long userId);
 
+        PollIndexDto GetUserPollIndex(long userId);
+
         PollDetailsDto GetPollDetails(long id);
 
         PollResultsDto GetPollResult(long id);

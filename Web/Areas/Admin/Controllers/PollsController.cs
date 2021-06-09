@@ -33,7 +33,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var polls = _pollService.GetAllUserPolls(GetCurrentUserId());
+            var polls = _pollService.GetUserPollIndex(GetCurrentUserId());
             return View(polls);
         }
 

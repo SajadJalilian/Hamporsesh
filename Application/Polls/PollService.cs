@@ -246,5 +246,15 @@ namespace Hamporsesh.Application.Polls
                 .Select(poll => _mapper.Map<PollOutputDto>(poll));
         }
 
+        public PollIndexDto GetUserPollIndex(long userId)
+        {
+            var polls = GetAllUserPolls(userId);
+            var user = _userService.GetById(userId);
+            return new PollIndexDto
+            {
+                Polls = polls,
+                User = user
+            };
+        }
     }
 }
