@@ -18,13 +18,13 @@ namespace Infrastructure.CrossCutting.Ioc
             services.AddSingleton<IConfiguration>(provider => { return configuration; });
             services.AddDbContext<MainContext>(ServiceLifetime.Scoped);
 
-            services.AddTransient<IUnitOfWork, MainContext>();
-            services.AddTransient<IAnswerService, AnswerService>();
-            services.AddTransient<IChoiceService, ChoiceService>();
-            services.AddTransient<IPollService, PollService>();
-            services.AddTransient<IQuestionService, QuestionService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IVisitorService, VisitorService>();
+            services.AddScoped<IUnitOfWork, MainContext>();
+            services.AddScoped<IAnswerService, AnswerService>();
+            services.AddScoped<IChoiceService, ChoiceService>();
+            services.AddScoped<IPollService, PollService>();
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IVisitorService, VisitorService>();
 
             //var container = new Container();
             //container.Configure(config =>

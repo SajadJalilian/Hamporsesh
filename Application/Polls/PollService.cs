@@ -43,7 +43,7 @@ namespace Hamporsesh.Application.Polls
             _answerService = answerService;
             _userService = userService;
             _visitorService = visitorService;
-            _polls = uow.Set<Poll>();
+            _polls = _uow.Set<Poll>();
         }
 
 
