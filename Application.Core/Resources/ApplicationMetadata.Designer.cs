@@ -97,20 +97,38 @@ namespace Hamporsesh.Application.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عنوان نظرسنجی.
+        /// </summary>
+        public static string PollTitle {
+            get {
+                return ResourceManager.GetString("PollTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عنوان سوال.
+        /// </summary>
+        public static string QuestionTitle {
+            get {
+                return ResourceManager.GetString("QuestionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نوع سوال.
+        /// </summary>
+        public static string QuestionType {
+            get {
+                return ResourceManager.GetString("QuestionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لطفا {0} را وارد کنید.
         /// </summary>
         public static string Required {
             get {
                 return ResourceManager.GetString("Required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to عنوان.
-        /// </summary>
-        public static string Title {
-            get {
-                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         

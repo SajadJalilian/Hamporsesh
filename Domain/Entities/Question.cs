@@ -12,10 +12,10 @@ namespace Hamporsesh.Domain.Entities
 
         public long PollId { get; set; }
 
-        public List<Answer> Answers { get; set; }
+        public virtual ICollection<Answer> Answers { get; set; }
 
         // [ForeignKey("PollId")]
-        public Poll Poll { get; set; }
+        public virtual Poll Poll { get; set; }
     }
 
 

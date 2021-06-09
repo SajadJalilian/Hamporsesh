@@ -66,8 +66,8 @@ namespace Hamporsesh.Application.Questions
         /// </summary>
         public IEnumerable<QuestionOutputDto> GetListByPollId(long pollId)
         {
-            var questions = _questions.Where(q => q.PollId == pollId);
-            return _mapper.Map<IEnumerable<QuestionOutputDto>>(questions);
+            var question = _questions.Where(q => q.PollId == pollId);
+            return _mapper.Map<IEnumerable<QuestionOutputDto>>(question).ToList();
         }
 
 
@@ -85,7 +85,7 @@ namespace Hamporsesh.Application.Questions
         public IEnumerable<QuestionOutputDto> GetAll()
         {
             var questions = _questions.OrderByDescending(q => q.Id);
-            return _mapper.Map<IEnumerable<QuestionOutputDto>>(questions);
+            return _mapper.Map<IEnumerable<QuestionOutputDto>>(questions).ToList();
         }
 
 

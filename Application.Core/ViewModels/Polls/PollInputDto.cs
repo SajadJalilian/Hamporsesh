@@ -9,7 +9,7 @@ namespace Hamporsesh.Application.Core.ViewModels.Polls
         public long Id { get; set; }
 
 
-        [Display(Name = nameof(ApplicationMetadata.Title), ResourceType = typeof(ApplicationMetadata))]
+        [Display(Name = nameof(ApplicationMetadata.PollTitle), ResourceType = typeof(ApplicationMetadata))]
         [Required(ErrorMessageResourceName = nameof(ApplicationMetadata.Required), ErrorMessageResourceType = typeof(ApplicationMetadata))]
         public string Title { get; set; }
 

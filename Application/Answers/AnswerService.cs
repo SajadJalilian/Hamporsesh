@@ -58,7 +58,7 @@ namespace Hamporsesh.Application.Answers
         public IEnumerable<AnswerOutputDto> GetListByQuestionId(long QuestionId)
         {
             var answers = _answers.Where(a => a.QuestionId == QuestionId);
-            return _mapper.Map<IEnumerable<AnswerOutputDto>>(answers);
+            return _mapper.Map<IEnumerable<AnswerOutputDto>>(answers).ToList();
         }
 
 
@@ -76,7 +76,7 @@ namespace Hamporsesh.Application.Answers
         public IEnumerable<AnswerOutputDto> GetAll()
         {
             var answers = _answers.OrderByDescending(u => u.Id);
-            return _mapper.Map<IEnumerable<AnswerOutputDto>>(answers);
+            return _mapper.Map<IEnumerable<AnswerOutputDto>>(answers).ToList();
         }
 
 
@@ -104,7 +104,7 @@ namespace Hamporsesh.Application.Answers
         public IEnumerable<AnswerOutputDto> GetAnswerByQuestionId(long id)
         {
             var answers = _answers.Where(a => a.QuestionId == id);
-            return _mapper.Map<IEnumerable<AnswerOutputDto>>(answers);
+            return _mapper.Map<IEnumerable<AnswerOutputDto>>(answers).ToList();
         }
 
 
@@ -121,7 +121,7 @@ namespace Hamporsesh.Application.Answers
         public IEnumerable<AnswerOutputDto> GetAllPollAnswers(long pollId)
         {
             var answers = _answers.Where(a => a.Question.PollId == pollId);
-            return _mapper.Map<IEnumerable<AnswerOutputDto>>(answers);
+            return _mapper.Map<IEnumerable<AnswerOutputDto>>(answers).ToList();
         }
     }
 }

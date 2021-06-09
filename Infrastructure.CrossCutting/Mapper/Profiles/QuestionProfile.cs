@@ -8,8 +8,11 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
     {
         public QuestionProfile()
         {
+            // <source -> destination>
             CreateMap<QuestionInputDto, Question>();
             CreateMap<Question, QuestionInputDto>();
+            CreateMap<QuestionOutputDto, Question>();
+            CreateMap<Question, QuestionOutputDto>();
         }
     }
 }
