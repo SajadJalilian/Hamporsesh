@@ -4,5 +4,6 @@ namespace Hamporsesh.Domain.Entities
 {
     public class Role : ApplicationRole
     {
+
     }
 }

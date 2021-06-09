@@ -6,7 +6,6 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
     {
         public AccountProfile()
         {
-            //CreateMap<User, UserInput>();
 
         }
 

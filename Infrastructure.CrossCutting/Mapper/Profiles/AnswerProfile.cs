@@ -8,7 +8,6 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
     {
         public AnswerProfile()
         {
-            //CreateMap<User, UserInput>();
             CreateMap<Answer, AnswerOutputDto>();
             CreateMap<Answer, AnswerInputDto>();
         }

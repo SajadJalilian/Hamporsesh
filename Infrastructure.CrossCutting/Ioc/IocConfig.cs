@@ -14,6 +14,23 @@ namespace Infrastructure.CrossCutting.Ioc
     {
         public static void AddIocConfig(this IServiceCollection services, IConfiguration configuration)
         {
+            #region DotNetDI
+
+            /*
+             * The below three methods define the lifetime of the services,
+             * 
+             * AddTransient:
+             *      Transient lifetime services are created each time they are requested.
+             *      This lifetime works best for lightweight, stateless services.
+             *      
+             * AddScoped:
+             *      Scoped lifetime services are created once per request.
+             *      
+             * AddSingleton:
+             *      Singleton lifetime services are created the first time they are requested
+             *      (or when ConfigureServices is run if you specify an instance there)
+             *      and then every subsequent request will use the same instance.
+             */
 
             services.AddSingleton<IConfiguration>(provider => { return configuration; });
             services.AddDbContext<MainContext>(ServiceLifetime.Scoped);
@@ -25,6 +42,10 @@ namespace Infrastructure.CrossCutting.Ioc
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IVisitorService, VisitorService>();
+
+            #endregion
+
+            #region StructureMap
 
             //var container = new Container();
             //container.Configure(config =>
@@ -40,6 +61,8 @@ namespace Infrastructure.CrossCutting.Ioc
             //});
             //container.Populate(services);
             //return container.GetInstance<IServiceProvider>();
+
+            #endregion
         }
 
     }

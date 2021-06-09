@@ -8,11 +8,6 @@ namespace Infrastructure.CrossCutting.Mapper.Profiles
     {
         public ChoiceProfile()
         {
-            //CreateMap<User, UserInput>();
-
-            //CreateMap<BoardInput, UpdateBoardCommand>()
-            //   .ConstructUsing(c => new UpdateBoardCommand(c.Id, c.Name, c.Description));
-
             CreateMap<Choice, PollParticipateDto>();
         }
     }

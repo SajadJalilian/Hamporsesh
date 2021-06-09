@@ -43,7 +43,7 @@ namespace Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
             if (!ModelState.IsValid)
-                return Json(new { result = false, message = Utilities.GetModelStateErrors(ModelState) });
+                return View(model);
 
 
             // This doesn't count login failures towards account lockout

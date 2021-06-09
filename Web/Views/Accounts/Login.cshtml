@@ -19,14 +19,17 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <input asp-for="UserName" class="form-control" placeholder="نام‌کاربری" required>
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
                         <div class="col-12 form-group">
-                            <input type="password" asp-for="Password" class="form-control" placeholder="پسورد" required>
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control"  type="password"/>
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <div class="col-12 mt-4">
                             <input name="submit" type="submit" class=" btn btn-hero btn-circled" value="ورود">
-                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                     </div>
                 </form>

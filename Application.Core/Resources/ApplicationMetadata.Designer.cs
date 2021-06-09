@@ -61,6 +61,15 @@ namespace Hamporsesh.Application.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تایید رمز عبور.
+        /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to توضیحات.
         /// </summary>
         public static string Description {
@@ -70,7 +79,25 @@ namespace Hamporsesh.Application.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لطفا {0}را وارد کنید.
+        ///   Looks up a localized string similar to نام.
+        /// </summary>
+        public static string DisplayName {
+            get {
+                return ResourceManager.GetString("DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رمز عبور.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لطفا {0} را وارد کنید.
         /// </summary>
         public static string Required {
             get {
@@ -84,6 +111,15 @@ namespace Hamporsesh.Application.Core.Resources {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نام کاربری.
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
     }

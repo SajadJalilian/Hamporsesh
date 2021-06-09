@@ -7,6 +7,7 @@ namespace Hamporsesh.Domain.Entities
         public string Title { get; set; }
 
         public long QuestionId { get; set; }
+
         public Question Question { get; set; }
     }
 }
