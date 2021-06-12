@@ -10,7 +10,7 @@
     </h5>
     <h4>
         Question Details | @Html.ActionLink(linkText: "Update", controllerName: "questions", actionName: "update", routeValues: new { id = Model.Question.Id }) |
-        <a data-ajax="true" data-ajax-method="Post" href="@Url.Action(action: "Delete", controller: "questions", values: new { id = Model.Question.Id }) " data-ajax-confirm="آیا از حذف کردن این رکورد مطمئن هستید؟" data-ajax-success="onSuccessDelete(data)" class=" btn btn-danger">
+        <a href="@Url.Action(action: "Delete", controller: "questions", values: new { id = Model.Question.Id }) " class="btn btn-danger">
             حذف
         </a>
 
@@ -49,8 +49,9 @@
                     @answer.Title |
                 </td>
                 <td>
-                    @Html.ActionLink(linkText: "Delete", actionName: "Delete", controllerName: "answers", new { id = answer.Id }) | 
-                    @Html.ActionLink(linkText: "Update", actionName: "Update", controllerName: "answers", new { id = answer.Id })
+                    @Html.ActionLink(linkText: "Update", actionName: "Update", controllerName: "answers", new { id = answer.Id }) |
+                    @Html.ActionLink(linkText: "حذف", actionName: "Delete", controllerName: "Answers",
+routeValues: new { id = answer.Id }, htmlAttributes: new { @class = "btn btn-danger" })
                 </td>
             </tr>
         }

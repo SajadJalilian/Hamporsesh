@@ -135,9 +135,11 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult Delete(long id)
         {
             var question = _questionService.GetbyId(id);
+            var pollId = question.PollId;
             _questionService.Delete(id);
+            _uow.SaveChanges();
 
-            return RedirectToAction("Details", "Polls", new { id = question.Id, area = "Admin" });
+            return RedirectToAction("Details", "Polls", new { id = pollId, area = "Admin" });
         }
     }
 }
