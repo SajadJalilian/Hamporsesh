@@ -25,8 +25,8 @@ namespace Web.Areas.Admin.Controllers
             IPollService pollService,
             IQuestionService questionService,
             IUserService userService,
-            IChoiceService choiceService
-, IAnswerService answerService)
+            IChoiceService choiceService,
+            IAnswerService answerService)
         {
             _pollService = pollService;
             _questionService = questionService;
@@ -45,7 +45,7 @@ namespace Web.Areas.Admin.Controllers
             var user = _userService.GetById(GetCurrentUserId());
             var polls = _pollService.GetAll(GetCurrentUserId());
             var chart = _choiceService.GetLast30DaysResponses();
-            var days = chart.Days.Select(d => d.ToPersianDateTimeString());
+            var days = chart.Days.Select(d => d.ToPersianDateString());
             var responses = chart.ResponseCounts.Select(r => long.Parse(r.ToString()));
 
 

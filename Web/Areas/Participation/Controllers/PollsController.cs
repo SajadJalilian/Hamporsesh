@@ -21,7 +21,6 @@ namespace Web.Areas.Participation.Controllers
         private readonly IQuestionService _questionService;
         private readonly IAnswerService _answerService;
         private readonly IChoiceService _choiceService;
-        private readonly IVisitorService _visitorService;
         private readonly IUnitOfWork _uow;
 
         public PollsController(
@@ -29,7 +28,6 @@ namespace Web.Areas.Participation.Controllers
             IQuestionService questionService,
             IAnswerService answerService,
             IChoiceService choiceService,
-            IVisitorService visitorService,
             IUnitOfWork uow
         )
         {
@@ -37,7 +35,6 @@ namespace Web.Areas.Participation.Controllers
             _questionService = questionService;
             _answerService = answerService;
             _choiceService = choiceService;
-            _visitorService = visitorService;
             _uow = uow;
         }
 
