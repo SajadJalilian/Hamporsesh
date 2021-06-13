@@ -1,12 +1,12 @@
 ﻿using Hamporsesh.Application.Core.ViewModels.Account;
 using Hamporsesh.Domain.Entities;
+using Hamporsesh.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Web.Extensions;
 
-namespace Web.Controllers
+namespace Hamporsesh.Web.Controllers
 {
 
     public class AccountsController : BaseController

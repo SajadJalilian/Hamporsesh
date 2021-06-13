@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Web.Areas.Admin.Components
+namespace Hamporsesh.Web.Areas.Admin.Components
 {
     public class UserMenu : ViewComponent
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Controllers
+namespace Hamporsesh.Web.Controllers
 {
     public class HomeController : BaseController
     {

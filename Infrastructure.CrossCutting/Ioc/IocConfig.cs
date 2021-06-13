@@ -8,7 +8,7 @@ using Hamporsesh.Infrastructure.Data.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.CrossCutting.Ioc
+namespace Hamporsesh.Infrastructure.CrossCutting.Ioc
 {
     public static class IocConfig
     {

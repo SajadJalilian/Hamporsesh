@@ -2,11 +2,11 @@
 using Hamporsesh.Application.Core.ViewModels.Answers;
 using Hamporsesh.Application.Questions;
 using Hamporsesh.Infrastructure.Data.Context;
+using Hamporsesh.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Web.Extensions;
 
-namespace Web.Areas.Admin.Controllers
+namespace Hamporsesh.Web.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]

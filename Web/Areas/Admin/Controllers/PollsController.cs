@@ -1,13 +1,13 @@
 ﻿using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Infrastructure.Data.Context;
+using Hamporsesh.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using Web.Extensions;
 
 
-namespace Web.Areas.Admin.Controllers
+namespace Hamporsesh.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize]

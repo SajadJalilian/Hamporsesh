@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Web.Admin
+namespace Hamporsesh.Web.Admin
 {
     public class Program
     {

@@ -2,7 +2,7 @@
 using Hamporsesh.Application.Core.ViewModels.Answers;
 using Hamporsesh.Domain.Entities;
 
-namespace Infrastructure.CrossCutting.Mapper.Profiles
+namespace Hamporsesh.Infrastructure.CrossCutting.Mapper.Profiles
 {
     class AnswerProfile : Profile
     {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace Web.Areas.Admin.Controllers
+namespace Hamporsesh.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize]

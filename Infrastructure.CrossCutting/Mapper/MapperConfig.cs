@@ -1,9 +1,9 @@
 ﻿using Hamporsesh.Application.Core.ViewModels.Answers;
-using Infrastructure.CrossCutting.Mapper.Profiles;
+using Hamporsesh.Infrastructure.CrossCutting.Mapper.Profiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Infrastructure.CrossCutting.Mapper
+namespace Hamporsesh.Infrastructure.CrossCutting.Mapper
 {
     public static class MapperConfig
     {

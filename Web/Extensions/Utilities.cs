@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Web.Extensions
+namespace Hamporsesh.Web.Extensions
 {
     public static class Utilities
     {

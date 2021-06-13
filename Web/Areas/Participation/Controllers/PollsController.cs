@@ -4,15 +4,14 @@ using Hamporsesh.Application.Core.ViewModels.Polls;
 using Hamporsesh.Application.Core.ViewModels.Questions;
 using Hamporsesh.Application.Polls;
 using Hamporsesh.Application.Questions;
-using Hamporsesh.Application.Visitors;
 using Hamporsesh.Infrastructure.Data.Context;
+using Hamporsesh.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Web.Extensions;
 
-namespace Web.Areas.Participation.Controllers
+namespace Hamporsesh.Web.Areas.Participation.Controllers
 {
     [Area("Participation")]
     public class PollsController : Controller

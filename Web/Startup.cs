@@ -1,6 +1,6 @@
-using Infrastructure.CrossCutting.Identity;
-using Infrastructure.CrossCutting.Ioc;
-using Infrastructure.CrossCutting.Mapper;
+using Hamporsesh.Infrastructure.CrossCutting.Identity;
+using Hamporsesh.Infrastructure.CrossCutting.Ioc;
+using Hamporsesh.Infrastructure.CrossCutting.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

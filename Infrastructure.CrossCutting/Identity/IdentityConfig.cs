@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Infrastructure.CrossCutting.Identity
+namespace Hamporsesh.Infrastructure.CrossCutting.Identity
 {
     public static class IdentityConfig
     {

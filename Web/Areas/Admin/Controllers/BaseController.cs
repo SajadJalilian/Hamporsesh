@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Web.Areas.Admin.Controllers
+namespace Hamporsesh.Web.Areas.Admin.Controllers
 {
 
     public class BaseController : Controller
