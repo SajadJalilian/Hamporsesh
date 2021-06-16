@@ -12,7 +12,7 @@ namespace Hamporsesh.Domain.Entities
 
         public long UserId { get; set; }
 
-        public List<Question> Questions { get; set; }
+        public virtual ICollection<Question> Questions { get; set; }
 
         public PollStatus Status { get; set; }
     }
