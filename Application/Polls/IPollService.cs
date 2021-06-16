@@ -17,7 +17,7 @@ namespace Hamporsesh.Application.Polls
 
         PollInputDto GetToUpdate(long id);
 
-        IEnumerable<PollOutputDto> GetAll(long userId);
+        IEnumerable<PollOutputDto> GetAllUser(long userId);
 
         void Delete(long id);
 

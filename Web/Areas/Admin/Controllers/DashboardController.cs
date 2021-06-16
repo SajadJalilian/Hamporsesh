@@ -43,7 +43,7 @@ namespace Hamporsesh.Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var user = _userService.GetById(GetCurrentUserId());
-            var polls = _pollService.GetAll(GetCurrentUserId());
+            var polls = _pollService.GetAllUser(GetCurrentUserId());
             var chart = _choiceService.GetLast30DaysResponses();
             var days = chart.Days.Select(d => d.ToPersianDateString());
             var responses = chart.ResponseCounts.Select(r => long.Parse(r.ToString()));

@@ -11,8 +11,6 @@ namespace Hamporsesh.Infrastructure.CrossCutting.Mapper
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-
-
             services.AddAutoMapper(typeof(AccountProfile));
             services.AddAutoMapper(typeof(AnswerOutputDto));
             services.AddAutoMapper(typeof(AnswerProfile));

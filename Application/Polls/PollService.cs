@@ -103,7 +103,7 @@ namespace Hamporsesh.Application.Polls
 
         /// <summary>
         /// </summary>
-        public IEnumerable<PollOutputDto> GetAll(long userId)
+        public IEnumerable<PollOutputDto> GetAllUser(long userId)
         {
             var polls = _polls.OrderByDescending(u => u.Id == userId);
             return _mapper.Map<IEnumerable<PollOutputDto>>(polls);
