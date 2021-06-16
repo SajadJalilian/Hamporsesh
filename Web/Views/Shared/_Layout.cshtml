@@ -44,16 +44,16 @@
             <ul class="navbar-nav ">
 
                 <li class="nav-item">
-                    <a class="nav-link smoth-scroll" asp-action="Index">خانه</a>
+                    <a class="nav-link smoth-scroll" asp-controller="Home" asp-action="Index">خانه</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link smoth-scroll" asp-action="Service">سرویس‌ها</a>
+                    <a class="nav-link smoth-scroll" asp-controller="Home" asp-action="Service">سرویس‌ها</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link smoth-scroll" href="/about">درباره‌ی ما</a>
+                    <a class="nav-link smoth-scroll" asp-controller="Home" asp-action="About">درباره‌ی ما</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link smoth-scroll" asp-action="Contact">تماس با ما</a>
+                    <a class="nav-link smoth-scroll" asp-controller="Home" asp-action="Contact">تماس با ما</a>
                 </li>
 
                 @if (!User.Identity.IsAuthenticated)
