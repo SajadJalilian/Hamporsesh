@@ -88,7 +88,18 @@ namespace Hamporsesh.Application.Polls
         public IEnumerable<PollOutputDto> GetListByUserId(long userId)
         {
             var polls = _polls.Where(p => p.UserId == userId).OrderByDescending(u => u.Id);
-            return _mapper.Map<IEnumerable<PollOutputDto>>(polls);
+            return polls.Select(poll => new PollOutputDto()
+            {
+                CreateDateTimeStr = poll.CreateDateTime.ToPersianDateTimeString(),
+                Description = poll.Description,
+                Id = poll.Id,
+                Status = poll.Status,
+                Title = poll.Title,
+                UserId = poll.UserId,
+                TotalResponses = _choiceService.GetPollTotalResponses(poll.Id)
+
+            });
+            //return _mapper.Map<IEnumerable<PollOutputDto>>(polls);
         }
 
 
@@ -100,14 +111,6 @@ namespace Hamporsesh.Application.Polls
             return _mapper.Map<PollInputDto>(poll);
         }
 
-
-        /// <summary>
-        /// </summary>
-        public IEnumerable<PollOutputDto> GetAllUser(long userId)
-        {
-            var polls = _polls.OrderByDescending(u => u.Id == userId);
-            return _mapper.Map<IEnumerable<PollOutputDto>>(polls);
-        }
 
 
         /// <summary>
@@ -125,7 +128,18 @@ namespace Hamporsesh.Application.Polls
         public IEnumerable<PollOutputDto> GetAllUserPolls(long userId)
         {
             var polls = _polls.OrderByDescending(u => u.UserId == userId);
-            return _mapper.Map<IEnumerable<PollOutputDto>>(polls);
+            return polls.Select(poll => new PollOutputDto()
+            {
+                CreateDateTimeStr = poll.CreateDateTime.ToPersianDateTimeString(),
+                Description = poll.Description,
+                Id = poll.Id,
+                Status = poll.Status,
+                Title = poll.Title,
+                UserId = poll.UserId,
+                TotalResponses = _choiceService.GetPollTotalResponses(poll.Id)
+
+            });
+            //return _mapper.Map<IEnumerable<PollOutputDto>>(polls);
         }
 
 
