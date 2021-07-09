@@ -18,7 +18,7 @@ namespace Hamporsesh.Infrastructure.CrossCutting.Mapper.Resolvers
         {
             long test = 545452;
             return test;
-            return _choiceService.GetPollTotalResponses(source.Id);
+            // return _choiceService.GetPollTotalResponses(source.Id);
         }
     }
 
